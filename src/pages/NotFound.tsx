@@ -1,7 +1,7 @@
 function NotFound() {
   return (
     <>
-      <div>NotFound</div>
+      <div>BIG NOT FOUND BIG</div>
     </>
   );
 }
