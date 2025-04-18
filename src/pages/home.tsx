@@ -1,20 +1,22 @@
 import Box from "@mui/system/Box";
-import styles from "./styles/Home.module.scss";
 import AddButton from "../features/ui/AddButton";
+import ProjectCardList from "../features/projects/ProjectCardList";
+import TransitionsModal from "../features/ui/Modal";
+import { createPortal } from "react-dom";
 function Home() {
   return (
-    <div className={`${styles["main"]}`}>
-      <section className={`${styles["home-header"]}`}>
-        <div>Projects</div>
-        <div>Filters</div>
-      </section>
-      <section className={`${styles["card-list"]}`}>A card</section>
+    <>
+      {createPortal(<TransitionsModal />, document.body)}
+      <Box sx={{ display: "flex", flexDirection: "row", fontSize: "28px" }}>
+        Projects
+      </Box>
+      <ProjectCardList />
       <Box
         display={"flex"}
         alignItems={"center"}
         justifyContent={"end"}
         sx={{
-          position: "absolute",
+          position: "fixed",
           height: "50px",
           bottom: "0px",
           right: "0px",
@@ -24,7 +26,7 @@ function Home() {
       >
         <AddButton placeHolder="Test" />
       </Box>
-    </div>
+    </>
   );
 }
 

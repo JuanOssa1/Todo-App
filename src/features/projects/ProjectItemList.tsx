@@ -1,5 +1,5 @@
 import List from "@mui/material/List";
-import Item from "./Item";
+import Item from "./ProjectItem";
 
 //import {ContentPaste} from "@mui/icons-material";
 
@@ -11,7 +11,7 @@ interface ProjectListProps {
   project: Project[];
 }
 
-function ProjectList({ project }: ProjectListProps) {
+function ProjectItemList({ project }: ProjectListProps) {
   return (
     <List>
       {["Cargill", "Novaventa", "M&M", "3M"].map(text => (
@@ -21,4 +21,4 @@ function ProjectList({ project }: ProjectListProps) {
   );
 }
 
-export default ProjectList;
+export default ProjectItemList;

@@ -11,7 +11,7 @@ interface ItemProps {
   icon: string;
 }
 
-function Item({ key, title, icon }: ItemProps) {
+function ProjectItem({ key, title, icon }: ItemProps) {
   return (
     <ListItem key={key} disablePadding>
       <ListItemButton>
@@ -24,4 +24,4 @@ function Item({ key, title, icon }: ItemProps) {
   );
 }
 
-export default Item;
+export default ProjectItem;

@@ -9,9 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import SearchBar from "../features/ui/SearchBar";
-import ProjectList from "../features/projects/ProjectList";
-import AddButton from "../features/ui/AddButton";
-import Item from "../features/projects/Item";
+import ProjectList from "../features/projects/ProjectItemList";
+import Item from "../features/projects/ProjectItem";
 const drawerWidth = 240;
 function Layout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);

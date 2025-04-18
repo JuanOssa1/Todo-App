@@ -1,12 +1,17 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
+//import type { Action } from "@reduxjs/toolkit";
+import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { modalSlice } from "./slice";
 
-const baseSlice = createSlice({
-  name: "base",
-  initialState: {},
-  reducers: {}
-});
+const rootReducer = combineSlices(modalSlice);
+export type RootState = ReturnType<typeof rootReducer>;
 
-const store = configureStore({ reducer: { base: baseSlice.reducer } });
+export const makeStore = (preloadedState?: Partial<RootState>) => {
+  const store = configureStore({ reducer: rootReducer, preloadedState });
+  setupListeners(store.dispatch);
+  return store;
+};
+export const store = makeStore();
 
-export const baseActions = baseSlice.actions;
-export default store;
+export type AppStore = typeof store;
+export type AppDispatch = AppStore["dispatch"];
