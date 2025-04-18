@@ -2,11 +2,17 @@ import Box from "@mui/system/Box";
 import AddButton from "../features/ui/AddButton";
 import ProjectCardList from "../features/projects/ProjectCardList";
 import TransitionsModal from "../features/ui/Modal";
+import { ProjectForm } from "../features/projects/ProjectForm";
 import { createPortal } from "react-dom";
 function Home() {
   return (
     <>
-      {createPortal(<TransitionsModal />, document.body)}
+      {createPortal(
+        <TransitionsModal>
+          <ProjectForm />
+        </TransitionsModal>,
+        document.body
+      )}
       <Box sx={{ display: "flex", flexDirection: "row", fontSize: "28px" }}>
         Projects
       </Box>
