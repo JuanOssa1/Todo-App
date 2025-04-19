@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { close, selectOpen } from "../../app/slice";
-import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
+import { ModalProps } from "./types";
 
 const style = {
   position: "absolute",
@@ -18,9 +18,6 @@ const style = {
   boxShadow: 24,
   p: 4
 };
-interface ModalProps {
-  children?: ReactNode;
-}
 
 export default function TransitionsModal({ children }: ModalProps) {
   const dispatch = useDispatch();

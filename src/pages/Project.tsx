@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { TaskForm } from "../features/tasks/TaskForm";
 import { useDispatch } from "react-redux";
 import { open } from "../app/slice";
+import Footer from "../features/ui/Footer";
 
 function Project() {
   const { projectId } = useParams();
@@ -29,21 +30,9 @@ function Project() {
         Project: {projectId}
       </Box>
       <TaskItemList />
-      <Box
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"end"}
-        sx={{
-          position: "fixed",
-          height: "50px",
-          bottom: "0px",
-          right: "0px",
-          width: { xs: "100%", sm: `calc(100% - ${240}px)` },
-          backgroundColor: "red"
-        }}
-      >
+      <Footer>
         <AddButton placeHolder="Add Task" onClick={() => dispatch(open())} />
-      </Box>
+      </Footer>
     </>
   );
 }
