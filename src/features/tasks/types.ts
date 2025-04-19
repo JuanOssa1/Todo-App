@@ -1,5 +1,9 @@
 import { Dayjs } from "dayjs";
 
+type TaskStatus = "Complete" | "Pending";
+export interface StatusItemProps {
+  taskStatus: TaskStatus;
+}
 export interface TaskFormData {
   taskName: string;
   taskPriority?: string;
@@ -8,4 +12,9 @@ export interface TaskFormData {
   taskAssignedTo?: string;
   taskCreationDate?: Dayjs;
   taskEndDate?: Dayjs;
+}
+
+export interface TaskItemProps {
+  priority: string;
+  taskState: TaskStatus;
 }

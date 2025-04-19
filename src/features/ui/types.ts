@@ -6,3 +6,6 @@ export interface ModalProps {
 export interface FooterProps {
   children?: ReactNode;
 }
+export interface HeaderProps {
+  children?: ReactNode;
+}
