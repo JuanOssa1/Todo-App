@@ -3,10 +3,12 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { close } from "../../app/slice";
-import { ProjectFormData } from "./types";
+import { addProject, close } from "../../app/slice";
+import { Project, ProjectFormData } from "./types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { doc, setDoc } from "firebase/firestore/lite";
+import db from "../../db/firestore";
 
 const validationSchema: yup.ObjectSchema<ProjectFormData> = yup.object({
   projectTitle: yup.string().required("Title is required"),
@@ -30,10 +32,20 @@ export const ProjectForm = () => {
       projectImageUrl: ""
     }
   });
-  const onSubmit = (values: ProjectFormData) => {
-    alert(JSON.stringify(values, null, 2));
-    console.log(values);
+  const onSubmit = async (values: ProjectFormData) => {
+    const projectId =
+      Date.now().toString(36) + Math.random().toString(36).slice(2);
+    const newProject: Project = {
+      projectDescription: values.projectDescription,
+      projectImageUrl: values.projectImageUrl,
+      projectTitle: values.projectTitle,
+      projectId
+    };
+    await setDoc(doc(db, "projects", projectId), newProject);
+    dispatch(addProject(newProject));
+    dispatch(close());
   };
+
   const dispatch = useDispatch();
 
   return (

@@ -9,8 +9,13 @@ import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
 import { open } from "../../app/slice";
 import { useRef } from "react";
+import { Project } from "./types";
 
-export default function ProjectCard() {
+interface ProjectCardProps {
+  project: Project;
+}
+
+export default function ProjectCard({ project }: ProjectCardProps) {
   const dispatch = useDispatch();
 
   const cardRef = useRef(null);
@@ -32,11 +37,10 @@ export default function ProjectCard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {project.projectTitle}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {project.projectDescription}
         </Typography>
       </CardContent>
       <CardActions>
