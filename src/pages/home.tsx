@@ -4,7 +4,10 @@ import ProjectCardList from "../features/projects/ProjectCardList";
 import TransitionsModal from "../features/ui/Modal";
 import { ProjectForm } from "../features/projects/ProjectForm";
 import { createPortal } from "react-dom";
+import { open } from "../app/slice";
+import { useDispatch } from "react-redux";
 function Home() {
+  const dispatch = useDispatch();
   return (
     <>
       {createPortal(
@@ -30,7 +33,7 @@ function Home() {
           backgroundColor: "red"
         }}
       >
-        <AddButton placeHolder="Test" />
+        <AddButton placeHolder="Test" onClick={() => dispatch(open())} />
       </Box>
     </>
   );

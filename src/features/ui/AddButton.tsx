@@ -1,10 +1,12 @@
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { MouseEventHandler } from "react";
 
 interface AddButtonProps {
   placeHolder: string;
+  onClick: MouseEventHandler;
 }
-function AddButton({ placeHolder }: AddButtonProps) {
+function AddButton({ placeHolder, onClick }: AddButtonProps) {
   return (
     <Stack
       spacing={2}
@@ -15,7 +17,9 @@ function AddButton({ placeHolder }: AddButtonProps) {
       alignContent={"center"}
       justifyContent={"center"}
     >
-      <Button variant="contained">{placeHolder}</Button>
+      <Button variant="contained" onClick={onClick}>
+        {placeHolder}
+      </Button>
     </Stack>
   );
 }
