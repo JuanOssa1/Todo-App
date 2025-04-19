@@ -5,16 +5,18 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import TaskStatus from "./TaskStatus";
 import { TaskItemProps } from "./types";
+import { TaskPriorityType } from "../../shared/constants";
+import { TaskPriority } from "../../shared/constants";
 
-const defineIconType = (priority: string) => {
+const defineIconType = (priority: TaskPriorityType) => {
   switch (priority) {
-    case "High":
+    case TaskPriority.High:
       return "priority_high";
 
-    case "Medium":
+    case TaskPriority.Medium:
       return "notification_important";
 
-    case "Low":
+    case TaskPriority.Low:
       return "low_priority";
 
     default:

@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { open } from "../app/slice";
 import TaskStatus from "../features/tasks/TaskStatus";
 import { TaskState } from "../shared/constants";
+import PageTitle from "../features/ui/PageTitle";
 
 function Task() {
   const dispatch = useDispatch();
@@ -32,9 +33,7 @@ function Task() {
             alignItems: "center"
           }}
         >
-          <Typography variant="h5" sx={{ color: "text.secondary" }}>
-            Hey is a task
-          </Typography>
+          <PageTitle title="Hey is a task" />
           <TaskStatus taskStatus={TaskState.Complete} />
         </Box>
       </Header>
