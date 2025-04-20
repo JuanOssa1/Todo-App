@@ -10,20 +10,27 @@ import { useDispatch } from "react-redux";
 import { open } from "../../app/slice";
 import { useRef } from "react";
 import { Project } from "./types";
+import { selectProject } from "../../app/slice";
+import { removeDbProject } from "../../app/slice";
+import { removeProject } from "../../app/slice";
+import { AppDispatch } from "../../app/store";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const cardRef = useRef(null);
 
   return (
     <Card sx={{ maxWidth: 345, position: "relative" }}>
       <IconButton
-        onClick={() => dispatch(open())}
+        onClick={() => {
+          dispatch(open());
+          dispatch(selectProject(project.projectId));
+        }}
         sx={{ position: "absolute", top: "8px", right: "16px", margin: 0 }}
       >
         <Icon>{"edit"}</Icon>
@@ -47,7 +54,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <Button ref={cardRef} size="small">
           More
         </Button>
-        <Button size="small">Delete</Button>
+        <Button
+          onClick={() => {
+            dispatch(removeDbProject(project.projectId));
+            dispatch(removeProject(project.projectId));
+          }}
+          size="small"
+        >
+          Delete
+        </Button>
       </CardActions>
     </Card>
   );

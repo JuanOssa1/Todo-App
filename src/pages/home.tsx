@@ -20,6 +20,7 @@ import { useAppSelector } from "../app/hooks";
 function Home() {
   const dispatch = useDispatch();
   const projectsLoaded = useAppSelector(selectIsLoaded);
+
   useEffect(() => {
     const getProjectsQuery = query(collection(db, "projects"));
     const fetchProjects = async () => {

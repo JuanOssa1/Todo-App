@@ -3,12 +3,19 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addProject, close } from "../../app/slice";
+import {
+  addProject,
+  close,
+  editProject,
+  selectCurrentProject,
+  selectProject
+} from "../../app/slice";
 import { Project, ProjectFormData } from "./types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { doc, setDoc } from "firebase/firestore/lite";
 import db from "../../db/firestore";
+import { useAppSelector } from "../../app/hooks";
 
 const validationSchema: yup.ObjectSchema<ProjectFormData> = yup.object({
   projectTitle: yup.string().required("Title is required"),
@@ -20,6 +27,7 @@ const textFieldStyle = {
 };
 
 export const ProjectForm = () => {
+  const currentProject = useAppSelector(selectCurrentProject);
   const {
     handleSubmit,
     control,
@@ -27,9 +35,9 @@ export const ProjectForm = () => {
   } = useForm<ProjectFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      projectTitle: "",
-      projectDescription: "",
-      projectImageUrl: ""
+      projectTitle: currentProject?.projectTitle ?? "",
+      projectDescription: currentProject?.projectDescription ?? "",
+      projectImageUrl: currentProject?.projectImageUrl ?? ""
     }
   });
   const onSubmit = async (values: ProjectFormData) => {
@@ -39,11 +47,20 @@ export const ProjectForm = () => {
       projectDescription: values.projectDescription,
       projectImageUrl: values.projectImageUrl,
       projectTitle: values.projectTitle,
-      projectId
+      projectId: currentProject?.projectId ?? projectId
     };
-    await setDoc(doc(db, "projects", projectId), newProject);
-    dispatch(addProject(newProject));
+
+    await setDoc(
+      doc(db, "projects", currentProject?.projectId ?? projectId),
+      newProject
+    );
+    if (currentProject) {
+      dispatch(editProject(newProject));
+    } else {
+      dispatch(addProject(newProject));
+    }
     dispatch(close());
+    dispatch(selectProject(undefined));
   };
 
   const dispatch = useDispatch();
@@ -111,7 +128,10 @@ export const ProjectForm = () => {
             color="primary"
             variant="contained"
             sx={{ marginLeft: "7px" }}
-            onClick={() => dispatch(close())}
+            onClick={() => {
+              dispatch(close());
+              dispatch(selectProject(undefined));
+            }}
           >
             Cancel
           </Button>

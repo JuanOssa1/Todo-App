@@ -2,7 +2,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import { close, selectOpen } from "../../app/slice";
+import { close, selectOpen, selectProject } from "../../app/slice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { ModalProps } from "./types";
@@ -30,7 +30,10 @@ export default function TransitionsModal({ children }: ModalProps) {
         aria-describedby="transition-modal-description"
         aria-hidden={!isOpen}
         open={isOpen}
-        onClose={() => dispatch(close())}
+        onClose={() => {
+          dispatch(close());
+          dispatch(selectProject(undefined));
+        }}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
