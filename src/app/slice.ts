@@ -15,7 +15,7 @@ import db from "../db/firestore";
 import { createAppSlice } from "./createAppSlice";
 import { Task } from "../features/tasks/types";
 import { RootState } from "./store";
-import { parseDbTask, parseTask } from "../features/tasks/parser";
+import { parseTask } from "../features/tasks/parser";
 
 interface ProjectSliceState {
   projects: Project[];
@@ -165,8 +165,7 @@ export const taskSlice = createAppSlice({
       await deleteDoc(doc(db, "tasks", taskId));
     }),
     addDbTask: create.asyncThunk(async (task: Task) => {
-      const parsedTask = parseDbTask(task);
-      await setDoc(doc(db, "tasks", task.taskId), parsedTask);
+      await setDoc(doc(db, "tasks", task.taskId), task);
     }),
     sortDbTask: create.asyncThunk(async (projectId: string, thunkAPI) => {
       const sortedTasks: Task[] = [];

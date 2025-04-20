@@ -51,10 +51,7 @@ function Task() {
             alignItems: "center"
           }}
         >
-          <PageTitle
-            title={task?.taskAssignedTo}
-            goPreviousPage={goPreviousPage}
-          />
+          <PageTitle title={task?.taskName} goPreviousPage={goPreviousPage} />
           <TaskStatus taskStatus={task?.taskState} />
         </Box>
       </Header>

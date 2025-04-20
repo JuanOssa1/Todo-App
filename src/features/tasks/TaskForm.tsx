@@ -84,14 +84,15 @@ export const TaskForm = () => {
   const onSubmit = (values: TaskFormData) => {
     const taskId =
       Date.now().toString(36) + Math.random().toString(36).slice(2);
+
     const newTask: Task = {
       taskName: values.taskName,
       taskPriority: values.taskPriority,
       taskState: values.taskState,
       taskDescription: values.taskDescription,
       taskAssignedTo: values.taskAssignedTo,
-      taskCreationDate: values.taskCreationDate,
-      taskEndDate: values.taskEndDate,
+      taskCreationDate: values.taskCreationDate?.toDate().toDateString(),
+      taskEndDate: values.taskEndDate?.toDate().toLocaleDateString(),
       taskId,
       projectId: projectId!
     };
@@ -99,7 +100,6 @@ export const TaskForm = () => {
     dispatch(addTask(newTask));
     dispatch(close());
     dispatch(isEditing(false));
-    console.log(values);
   };
 
   return (
