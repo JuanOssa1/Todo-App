@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 export interface PageTitleProps {
   goBack?: boolean;
-  title: string;
+  title?: string;
 }
 function PageTitle({ title, goBack = true }: PageTitleProps) {
   return (

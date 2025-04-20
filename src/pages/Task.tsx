@@ -11,11 +11,23 @@ import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { open } from "../app/slice";
 import TaskStatus from "../features/tasks/TaskStatus";
-import { TaskState } from "../shared/constants";
 import PageTitle from "../features/ui/PageTitle";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { getTask } from "../app/slice";
+import { AppDispatch } from "../app/store";
+import { selectActiveTsk } from "../app/slice";
+import { useAppSelector } from "../app/hooks";
 
 function Task() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const task = useAppSelector(selectActiveTsk);
+  const { taskId } = useParams();
+  useEffect(() => {
+    dispatch(getTask(taskId!));
+  }, [dispatch, taskId]);
+  console.log(task);
+
   return (
     <>
       {createPortal(
@@ -33,8 +45,8 @@ function Task() {
             alignItems: "center"
           }}
         >
-          <PageTitle title="Hey is a task" />
-          <TaskStatus taskStatus={TaskState.Complete} />
+          <PageTitle title={task?.taskAssignedTo} />
+          <TaskStatus taskStatus={task?.taskState} />
         </Box>
       </Header>
       <Box
@@ -44,8 +56,7 @@ function Task() {
         }}
       >
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica Lizards are a
+          {task?.taskDescription}
         </Typography>
       </Box>
       <Footer>
@@ -64,13 +75,13 @@ function Task() {
             </Grid>
             <Grid size="grow">
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                Juan
+                {task?.taskAssignedTo}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                21/04/2025
+                {task?.taskCreationDate?.toString()}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                21/04/2025
+                {task?.taskEndDate?.toString()}
               </Typography>
             </Grid>
             <Grid

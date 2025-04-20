@@ -7,6 +7,7 @@ import TaskStatus from "./TaskStatus";
 import { TaskPriorityType } from "../../shared/constants";
 import { TaskPriority } from "../../shared/constants";
 import { Task } from "./types";
+import { Link } from "react-router-dom";
 
 const defineIconType = (priority?: TaskPriorityType) => {
   switch (priority) {
@@ -60,7 +61,9 @@ function TaskItem({ task }: TaskItemProps) {
         </Grid>
         <Grid size="grow">
           <IconButton>
-            <Icon>{"input"}</Icon>
+            <Link to={`${task.taskId}`}>
+              <Icon>{"input"}</Icon>
+            </Link>
           </IconButton>
         </Grid>
       </Grid>

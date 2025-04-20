@@ -1,11 +1,8 @@
-// React y Hooks
 import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
-
-// Redux
 import {
   setTasks,
   open,
@@ -15,12 +12,8 @@ import {
   sortDbTask
 } from "../app/slice";
 import { AppDispatch } from "../app/store";
-
-// Firebase
 import db from "../db/firestore";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";
-
-// Features - UI
 import AddButton from "../features/ui/AddButton";
 import Filter from "../features/ui/Filter";
 import Footer from "../features/ui/Footer";
@@ -28,8 +21,6 @@ import Header from "../features/ui/Header";
 import TransitionsModal from "../features/ui/Modal";
 import PageTitle from "../features/ui/PageTitle";
 import Sort from "../features/ui/Sort";
-
-// Features - Tasks
 import { TaskForm } from "../features/tasks/TaskForm";
 import TaskItemList from "../features/tasks/TaskItemList";
 import TaskFilter from "../features/tasks/TaskFilter";
