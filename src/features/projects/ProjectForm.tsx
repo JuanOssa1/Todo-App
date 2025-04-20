@@ -7,7 +7,7 @@ import { close, addDbProject } from "../../app/slice";
 import {
   addProject,
   editProject,
-  selectCurrentProject,
+  selectSelectedProject,
   selectProject
 } from "../../app/slice";
 
@@ -28,7 +28,7 @@ const textFieldStyle = {
 
 export const ProjectForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentProject = useAppSelector(selectCurrentProject);
+  const currentProject = useAppSelector(selectSelectedProject);
   const {
     handleSubmit,
     control,

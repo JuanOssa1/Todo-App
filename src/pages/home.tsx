@@ -37,7 +37,6 @@ function Home() {
     dispatch(markAsLoaded());
 
     if (projectsLoaded) {
-      console.log("Executed");
       fetchProjects();
     }
   }, [dispatch, projectsLoaded]);

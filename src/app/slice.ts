@@ -21,6 +21,7 @@ interface ProjectSliceState {
   projects: Project[];
   isLoaded: boolean;
   selectedProject?: Project;
+  currentProject?: Project;
 }
 interface TaskSliceState {
   tasks: Task[];
@@ -91,6 +92,7 @@ export const projectSlice = createSlice({
         }
       }
     ),
+
     editProject: create.reducer(
       (state, action: PayloadAction<Project | undefined>) => {
         const index = state.projects.findIndex(
@@ -116,7 +118,8 @@ export const projectSlice = createSlice({
   selectors: {
     selectProjectList: project => project.projects,
     selectIsLoaded: project => project.isLoaded,
-    selectCurrentProject: project => project.selectedProject
+    selectSelectedProject: project => project.selectedProject,
+    selectCurrentProject: project => project.currentProject
   }
 });
 interface filterThunk {
@@ -288,8 +291,12 @@ export const {
   selectActiveTsk,
   selectTaskIsEditing
 } = taskSlice.selectors;
-export const { selectProjectList, selectIsLoaded, selectCurrentProject } =
-  projectSlice.selectors;
+export const {
+  selectProjectList,
+  selectIsLoaded,
+  selectSelectedProject,
+  selectCurrentProject
+} = projectSlice.selectors;
 export const { selectOpen } = modalSlice.selectors;
 
 export default store;

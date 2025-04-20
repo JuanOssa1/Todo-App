@@ -8,13 +8,14 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
 import { open } from "../../app/slice";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Project } from "./types";
 import { selectProject } from "../../app/slice";
 import { removeProject } from "../../app/slice";
 import { removeDbProject } from "../../app/slice";
 import { AppDispatch } from "../../app/store";
 import { Link } from "react-router-dom";
+import defaultProjectImage from "./assets/defaultProjectImage.jpg";
 
 interface ProjectCardProps {
   project: Project;
@@ -22,11 +23,15 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   const dispatch = useDispatch<AppDispatch>();
-
+  const [imageError, setImageError] = useState(false);
   const cardRef = useRef(null);
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  console.log(imageError);
 
   return (
-    <Card sx={{ maxWidth: 345, position: "relative" }}>
+    <Card sx={{ minWidth: 200, maxWidth: 345, position: "relative" }}>
       <IconButton
         onClick={() => {
           dispatch(open());
@@ -37,11 +42,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <Icon>{"edit"}</Icon>
       </IconButton>
       <CardMedia
+        onError={handleImageError}
         ref={cardRef}
         component="img"
-        alt="green iguana"
+        alt="project image"
         height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
+        image={imageError ? defaultProjectImage : project.projectImageUrl}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

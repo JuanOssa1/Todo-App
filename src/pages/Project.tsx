@@ -86,7 +86,7 @@ function Project() {
             alignItems: "center"
           }}
         >
-          <PageTitle title="Hey is a Project" goPreviousPage={goPreviousPage} />
+          <PageTitle title="Project Tasks" goPreviousPage={goPreviousPage} />
           <Box>
             <Filter aria-describedby={id} onClick={handleClick} />
             <Sort
