@@ -13,12 +13,15 @@ import { close } from "../../app/slice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
-import { TaskFormData } from "./types";
+import { Task, TaskFormData } from "./types";
 import { TaskPriority } from "../../shared/constants";
 import { TaskState } from "../../shared/constants";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useParams } from "react-router-dom";
+import { addDbTask } from "../../app/slice";
+import { AppDispatch } from "../../app/store";
 
 const validationSchema: yup.ObjectSchema<TaskFormData> = yup.object().shape({
   taskName: yup.string().required("Title is required"),
@@ -34,6 +37,8 @@ const textFieldStyle = {
 };
 
 export const TaskForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { projectId } = useParams();
   const {
     handleSubmit,
     control,
@@ -51,11 +56,23 @@ export const TaskForm = () => {
     }
   });
   const onSubmit = (values: TaskFormData) => {
-    alert(JSON.stringify(values, null, 2));
+    const taskId =
+      Date.now().toString(36) + Math.random().toString(36).slice(2);
+    const newTask: Task = {
+      taskName: values.taskName,
+      taskPriority: values.taskPriority,
+      taskState: values.taskState,
+      taskDescription: values.taskDescription,
+      taskAssignedTo: values.taskAssignedTo,
+      taskCreationDate: values.taskCreationDate,
+      taskEndDate: values.taskEndDate,
+      taskId: taskId,
+      projectId: projectId!
+    };
+    dispatch(addDbTask(newTask));
+    dispatch(close());
     console.log(values);
   };
-
-  const dispatch = useDispatch();
 
   return (
     <>

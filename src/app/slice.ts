@@ -1,18 +1,18 @@
-import {
-  createSlice,
-  configureStore,
-  PayloadAction,
-  createAsyncThunk
-} from "@reduxjs/toolkit";
+import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import { Project } from "../features/projects/types";
-import { deleteDoc, doc } from "firebase/firestore/lite";
+import { deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import db from "../db/firestore";
 import { createAppSlice } from "./createAppSlice";
+import { Task } from "../features/tasks/types";
 
 interface ProjectSliceState {
   projects: Project[];
   isLoaded: boolean;
   selectedProject?: Project;
+}
+interface TaskSliceState {
+  tasks: Task[];
+  tasksAreLoaded: boolean;
 }
 const initialModalState = { isOpen: false };
 
@@ -20,6 +20,11 @@ const initialProjectState: ProjectSliceState = {
   projects: [],
   isLoaded: false,
   selectedProject: undefined
+};
+
+const initialTaskState: TaskSliceState = {
+  tasks: [],
+  tasksAreLoaded: false
 };
 
 export const modalSlice = createSlice({
@@ -38,17 +43,6 @@ export const modalSlice = createSlice({
   }
 });
 
-export const deleteProject = createAsyncThunk(
-  "projects/deleteProject",
-  async (projectId: string, { dispatch }) => {
-    try {
-      await deleteDoc(doc(db, "projects", projectId));
-      dispatch(removeProject(projectId));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-);
 export const projectSlice = createSlice({
   name: "project",
   initialState: initialProjectState,
@@ -98,26 +92,80 @@ export const projectSlice = createSlice({
   }
 });
 
-const initialDeleteState = {
-  projects: [],
-  isLoaded: false,
-  selectedProject: undefined
-};
+export const taskSlice = createSlice({
+  name: "tasks",
+  initialState: initialTaskState,
+  reducers: create => ({
+    addTask: create.reducer((state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
+    }),
+    setTasks: create.reducer((state, action: PayloadAction<Task[]>) => {
+      state.tasks = action.payload;
+    }),
+    markTasksAsLoaded: create.reducer(state => {
+      state.tasksAreLoaded = true;
+    })
+  }),
+  selectors: {
+    selectTaskList: task => task.tasks,
+    selectTaskIsLoaded: task => task.tasksAreLoaded
+  }
+});
+
+interface addDbProject {
+  currentProjectId: string;
+  project: Project;
+}
 export const asyncProjectSlice = createAppSlice({
-  name: "deleteProject",
-  initialState: initialDeleteState,
+  name: "projectDb",
+  initialState: {},
   reducers: create => ({
     removeDbProject: create.asyncThunk(async (projectId: string) => {
       await deleteDoc(doc(db, "projects", projectId));
+    }),
+    addDbProject: create.asyncThunk(async (values: addDbProject) => {
+      const { currentProjectId, project } = values;
+      await setDoc(doc(db, "projects", currentProjectId), project);
+    })
+  })
+});
+export const asyncTaskSlice = createAppSlice({
+  name: "taskDb",
+  initialState: {},
+  reducers: create => ({
+    removeDbTask: create.asyncThunk(async (taskId: string) => {
+      await deleteDoc(doc(db, "tasks", taskId));
+    }),
+    addDbTask: create.asyncThunk(async (task: Task) => {
+      const parsedTask = {
+        taskName: task.taskName,
+        taskPriority: task.taskPriority,
+        taskState: task.taskState,
+        taskDescription: task.taskDescription,
+        taskAssignedTo: task.taskAssignedTo,
+        taskCreationDate: task.taskCreationDate?.toDate().toDateString(),
+        taskEndDate: task.taskEndDate?.toDate().toLocaleDateString(),
+        taskId: task.taskId,
+        projectId: task.projectId!
+      };
+      console.log("On the reducer", parsedTask);
+      await setDoc(doc(db, "tasks", task.taskId), parsedTask);
     })
   })
 });
 
 const store = configureStore({
-  reducer: { modal: modalSlice.reducer, project: projectSlice.reducer }
+  reducer: {
+    modal: modalSlice.reducer,
+    project: projectSlice.reducer,
+    tasks: taskSlice.reducer,
+    projectDb: asyncProjectSlice.reducer,
+    taskDb: asyncTaskSlice.reducer
+  }
 });
-
-export const { removeDbProject } = asyncProjectSlice.actions;
+export const { addTask, setTasks, markTasksAsLoaded } = taskSlice.actions;
+export const { removeDbProject, addDbProject } = asyncProjectSlice.actions;
+export const { removeDbTask, addDbTask } = asyncTaskSlice.actions;
 export const { open, close } = modalSlice.actions;
 export const {
   addProject,
@@ -128,6 +176,7 @@ export const {
   removeProject
 } = projectSlice.actions;
 
+export const { selectTaskIsLoaded, selectTaskList } = taskSlice.selectors;
 export const { selectProjectList, selectIsLoaded, selectCurrentProject } =
   projectSlice.selectors;
 export const { selectOpen } = modalSlice.selectors;

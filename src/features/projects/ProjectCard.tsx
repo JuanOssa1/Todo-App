@@ -11,9 +11,10 @@ import { open } from "../../app/slice";
 import { useRef } from "react";
 import { Project } from "./types";
 import { selectProject } from "../../app/slice";
-import { removeDbProject } from "../../app/slice";
 import { removeProject } from "../../app/slice";
+import { removeDbProject } from "../../app/slice";
 import { AppDispatch } from "../../app/store";
+import { Link } from "react-router-dom";
 
 interface ProjectCardProps {
   project: Project;
@@ -52,7 +53,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </CardContent>
       <CardActions>
         <Button ref={cardRef} size="small">
-          More
+          <Link to={`project/${project.projectId}`}>More</Link>
         </Button>
         <Button
           onClick={() => {

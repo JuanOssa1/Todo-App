@@ -2,8 +2,13 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TaskItem from "./TaskItem";
 import Divider from "@mui/material/Divider";
+import { selectTaskList } from "../../app/slice";
+import { useAppSelector } from "../../app/hooks";
 
 export default function TaskItemList() {
+  const tasks = useAppSelector(selectTaskList);
+  console.log(tasks);
+
   return (
     <Box>
       <Grid

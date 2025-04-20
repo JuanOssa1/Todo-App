@@ -3,19 +3,19 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { close, addDbProject } from "../../app/slice";
 import {
   addProject,
-  close,
   editProject,
   selectCurrentProject,
   selectProject
 } from "../../app/slice";
+
 import { Project, ProjectFormData } from "./types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
-import { doc, setDoc } from "firebase/firestore/lite";
-import db from "../../db/firestore";
 import { useAppSelector } from "../../app/hooks";
+import { AppDispatch } from "../../app/store";
 
 const validationSchema: yup.ObjectSchema<ProjectFormData> = yup.object({
   projectTitle: yup.string().required("Title is required"),
@@ -27,6 +27,7 @@ const textFieldStyle = {
 };
 
 export const ProjectForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const currentProject = useAppSelector(selectCurrentProject);
   const {
     handleSubmit,
@@ -49,10 +50,11 @@ export const ProjectForm = () => {
       projectTitle: values.projectTitle,
       projectId: currentProject?.projectId ?? projectId
     };
-
-    await setDoc(
-      doc(db, "projects", currentProject?.projectId ?? projectId),
-      newProject
+    dispatch(
+      addDbProject({
+        project: newProject,
+        currentProjectId: currentProject?.projectId ?? projectId
+      })
     );
     if (currentProject) {
       dispatch(editProject(newProject));
@@ -62,8 +64,6 @@ export const ProjectForm = () => {
     dispatch(close());
     dispatch(selectProject(undefined));
   };
-
-  const dispatch = useDispatch();
 
   return (
     <>

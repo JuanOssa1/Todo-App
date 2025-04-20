@@ -14,6 +14,10 @@ export interface TaskFormData {
   taskCreationDate?: Dayjs;
   taskEndDate?: Dayjs;
 }
+export interface Task extends TaskFormData {
+  taskId: string;
+  projectId: string;
+}
 
 export interface TaskItemProps {
   priority: TaskPriorityType;

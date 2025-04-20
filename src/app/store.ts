@@ -3,8 +3,9 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { modalSlice } from "./slice";
 import { projectSlice } from "./slice";
+import { taskSlice } from "./slice";
 
-const rootReducer = combineSlices(modalSlice, projectSlice);
+const rootReducer = combineSlices(modalSlice, projectSlice, taskSlice);
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {
