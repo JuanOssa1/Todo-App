@@ -1,14 +1,13 @@
 import { Dayjs } from "dayjs";
+import { TaskStatusType } from "../../shared/constants";
 import { TaskPriorityType } from "../../shared/constants";
-
-type TaskStatus = "Complete" | "Pending";
 export interface StatusItemProps {
-  taskStatus: TaskStatus;
+  taskStatus: TaskStatusType;
 }
 export interface TaskFormData {
   taskName: string;
-  taskPriority?: string;
-  taskState?: string;
+  taskPriority?: TaskPriorityType;
+  taskState?: TaskStatusType;
   taskDescription?: string;
   taskAssignedTo?: string;
   taskCreationDate?: Dayjs;
@@ -17,9 +16,4 @@ export interface TaskFormData {
 export interface Task extends TaskFormData {
   taskId: string;
   projectId: string;
-}
-
-export interface TaskItemProps {
-  priority: TaskPriorityType;
-  taskState: TaskStatus;
 }

@@ -9,7 +9,7 @@ import {
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { close } from "../../app/slice";
+import { addTask, close } from "../../app/slice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
@@ -25,8 +25,8 @@ import { AppDispatch } from "../../app/store";
 
 const validationSchema: yup.ObjectSchema<TaskFormData> = yup.object().shape({
   taskName: yup.string().required("Title is required"),
-  taskPriority: yup.string(),
-  taskState: yup.string(),
+  taskPriority: yup.mixed(),
+  taskState: yup.mixed(),
   taskDescription: yup.string(),
   taskAssignedTo: yup.string(),
   taskCreationDate: yup.mixed(),
@@ -70,6 +70,7 @@ export const TaskForm = () => {
       projectId: projectId!
     };
     dispatch(addDbTask(newTask));
+    dispatch(addTask(newTask));
     dispatch(close());
     console.log(values);
   };

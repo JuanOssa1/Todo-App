@@ -20,6 +20,8 @@ import { parseTask } from "../features/tasks/parser";
 import { markTasksAsLoaded, selectTaskIsLoaded } from "../app/slice";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
+import { sortTasks, sortDbTask } from "../app/slice";
+import { AppDispatch } from "../app/store";
 
 function Project() {
   const { projectId } = useParams();
@@ -34,7 +36,7 @@ function Project() {
   };
   const openPopOver = Boolean(anchorEl);
   const id = openPopOver ? "simple-popover" : undefined;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const getProjectsQuery = query(
@@ -74,7 +76,12 @@ function Project() {
           <PageTitle title="Hey is a Project" />
           <Box>
             <Filter aria-describedby={id} onClick={handleClick} />
-            <Sort />
+            <Sort
+              onClick={() => {
+                dispatch(sortTasks());
+                dispatch(sortDbTask(projectId!));
+              }}
+            />
           </Box>
           <Popover
             id={id}

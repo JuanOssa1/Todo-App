@@ -4,11 +4,11 @@ import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import TaskStatus from "./TaskStatus";
-import { TaskItemProps } from "./types";
 import { TaskPriorityType } from "../../shared/constants";
 import { TaskPriority } from "../../shared/constants";
+import { Task } from "./types";
 
-const defineIconType = (priority: TaskPriorityType) => {
+const defineIconType = (priority?: TaskPriorityType) => {
   switch (priority) {
     case TaskPriority.High:
       return "priority_high";
@@ -20,16 +20,20 @@ const defineIconType = (priority: TaskPriorityType) => {
       return "low_priority";
 
     default:
+      return "low_priority";
       break;
   }
 };
+export interface TaskItemProps {
+  task: Task;
+}
 
-function TaskItem({ priority, taskState }: TaskItemProps) {
+function TaskItem({ task }: TaskItemProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid size={2}>
-          <Icon>{defineIconType(priority)}</Icon>
+          <Icon>{defineIconType(task.taskPriority)}</Icon>
         </Grid>
         <Grid size="grow">
           <Typography
@@ -40,8 +44,7 @@ function TaskItem({ priority, taskState }: TaskItemProps) {
               overflow: "hidden"
             }}
           >
-            This is the project name This is the project name This is the
-            project name This is the project name
+            {task.taskName}
           </Typography>
         </Grid>
         <Grid size="grow">
@@ -49,11 +52,11 @@ function TaskItem({ priority, taskState }: TaskItemProps) {
             variant="body2"
             sx={{ color: "text.secondary", overflow: "hidden" }}
           >
-            DD/MM/YYY
+            {task.taskEndDate?.toString()}
           </Typography>
         </Grid>
         <Grid size="grow">
-          <TaskStatus taskStatus={taskState} />
+          <TaskStatus taskStatus={task.taskState!} />
         </Grid>
         <Grid size="grow">
           <IconButton>
