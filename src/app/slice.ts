@@ -15,7 +15,7 @@ import db from "../db/firestore";
 import { createAppSlice } from "./createAppSlice";
 import { Task } from "../features/tasks/types";
 import { RootState } from "./store";
-import { parseTask } from "../features/tasks/parser";
+import { parseDbTask, parseTask } from "../features/tasks/parser";
 
 interface ProjectSliceState {
   projects: Project[];
@@ -30,6 +30,7 @@ interface TaskSliceState {
   taskState?: string;
   taskOrder: "desc" | "asc";
   taskActive?: Task;
+  taskBeingEdited: boolean;
 }
 const initialModalState = { isOpen: false };
 
@@ -50,7 +51,8 @@ const initialTaskState: TaskSliceState = {
     taskId: "",
     projectId: "",
     taskName: ""
-  }
+  },
+  taskBeingEdited: false
 };
 
 export const modalSlice = createSlice({
@@ -139,6 +141,9 @@ export const taskSlice = createAppSlice({
       state.taskSort = !state.taskSort;
       state.taskOrder = state.taskSort ? "desc" : "asc";
     }),
+    isEditing: create.reducer((state, action: PayloadAction<boolean>) => {
+      state.taskBeingEdited = action.payload;
+    }),
     setFilters: create.reducer(
       (
         state,
@@ -160,17 +165,7 @@ export const taskSlice = createAppSlice({
       await deleteDoc(doc(db, "tasks", taskId));
     }),
     addDbTask: create.asyncThunk(async (task: Task) => {
-      const parsedTask = {
-        taskName: task.taskName,
-        taskPriority: task.taskPriority,
-        taskState: task.taskState,
-        taskDescription: task.taskDescription,
-        taskAssignedTo: task.taskAssignedTo,
-        taskCreationDate: task.taskCreationDate?.toDate().toDateString(),
-        taskEndDate: task.taskEndDate?.toDate().toLocaleDateString(),
-        taskId: task.taskId,
-        projectId: task.projectId!
-      };
+      const parsedTask = parseDbTask(task);
       await setDoc(doc(db, "tasks", task.taskId), parsedTask);
     }),
     sortDbTask: create.asyncThunk(async (projectId: string, thunkAPI) => {
@@ -232,7 +227,8 @@ export const taskSlice = createAppSlice({
   selectors: {
     selectTaskList: task => task.tasks,
     selectTaskIsLoaded: task => task.tasksAreLoaded,
-    selectActiveTsk: task => task.taskActive
+    selectActiveTsk: task => task.taskActive,
+    selectTaskIsEditing: task => task.taskBeingEdited
   }
 });
 
@@ -273,7 +269,8 @@ export const {
   setFilters,
   sortTasks,
   getTask,
-  setTask
+  setTask,
+  isEditing
 } = taskSlice.actions;
 export const { removeDbProject, addDbProject } = asyncProjectSlice.actions;
 export const { open, close } = modalSlice.actions;
@@ -286,8 +283,12 @@ export const {
   removeProject
 } = projectSlice.actions;
 
-export const { selectTaskIsLoaded, selectTaskList, selectActiveTsk } =
-  taskSlice.selectors;
+export const {
+  selectTaskIsLoaded,
+  selectTaskList,
+  selectActiveTsk,
+  selectTaskIsEditing
+} = taskSlice.selectors;
 export const { selectProjectList, selectIsLoaded, selectCurrentProject } =
   projectSlice.selectors;
 export const { selectOpen } = modalSlice.selectors;

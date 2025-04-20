@@ -6,12 +6,18 @@ import Typography from "@mui/material/Typography";
 export interface PageTitleProps {
   goBack?: boolean;
   title?: string;
+  goPreviousPage?: () => void;
 }
-function PageTitle({ title, goBack = true }: PageTitleProps) {
+function PageTitle({ title, goBack = true, goPreviousPage }: PageTitleProps) {
+  const handleNavigation = () => {
+    if (goPreviousPage) {
+      goPreviousPage();
+    }
+  };
   return (
     <Box display="flex" flexDirection="row">
       {goBack && (
-        <IconButton>
+        <IconButton onClick={handleNavigation}>
           <Icon>{"arrow_back"}</Icon>
         </IconButton>
       )}

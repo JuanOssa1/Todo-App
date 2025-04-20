@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { open } from "../app/slice";
+import { open, isEditing } from "../app/slice";
 import TaskStatus from "../features/tasks/TaskStatus";
 import PageTitle from "../features/ui/PageTitle";
 import { useParams } from "react-router-dom";
@@ -18,15 +18,21 @@ import { getTask } from "../app/slice";
 import { AppDispatch } from "../app/store";
 import { selectActiveTsk } from "../app/slice";
 import { useAppSelector } from "../app/hooks";
+import { removeDbTask } from "../app/slice";
+import { useNavigate } from "react-router-dom";
 
 function Task() {
   const dispatch = useDispatch<AppDispatch>();
   const task = useAppSelector(selectActiveTsk);
+  const navigate = useNavigate();
   const { taskId } = useParams();
   useEffect(() => {
     dispatch(getTask(taskId!));
   }, [dispatch, taskId]);
-  console.log(task);
+
+  const goPreviousPage = () => {
+    navigate(-1);
+  };
 
   return (
     <>
@@ -45,7 +51,10 @@ function Task() {
             alignItems: "center"
           }}
         >
-          <PageTitle title={task?.taskAssignedTo} />
+          <PageTitle
+            title={task?.taskAssignedTo}
+            goPreviousPage={goPreviousPage}
+          />
           <TaskStatus taskStatus={task?.taskState} />
         </Box>
       </Header>
@@ -91,10 +100,20 @@ function Task() {
               gap={"0px"}
               sx={{ alignItems: "end", justifyContent: "end" }}
             >
-              <IconButton onClick={() => dispatch(open())}>
+              <IconButton
+                onClick={() => {
+                  dispatch(open());
+                  dispatch(isEditing(true));
+                }}
+              >
                 <Icon>{"edit"}</Icon>
               </IconButton>
-              <IconButton>
+              <IconButton
+                onClick={() => {
+                  dispatch(removeDbTask(taskId!));
+                  goPreviousPage();
+                }}
+              >
                 <Icon>{"delete"}</Icon>
               </IconButton>
             </Grid>

@@ -9,7 +9,14 @@ import {
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addTask, close } from "../../app/slice";
+import {
+  addTask,
+  close,
+  addDbTask,
+  selectActiveTsk,
+  selectTaskIsEditing,
+  isEditing
+} from "../../app/slice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
@@ -20,8 +27,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useParams } from "react-router-dom";
-import { addDbTask } from "../../app/slice";
 import { AppDispatch } from "../../app/store";
+import { useAppSelector } from "../../app/hooks";
 
 const validationSchema: yup.ObjectSchema<TaskFormData> = yup.object().shape({
   taskName: yup.string().required("Title is required"),
@@ -38,22 +45,41 @@ const textFieldStyle = {
 
 export const TaskForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const task = useAppSelector(selectActiveTsk);
+  const isEditingTask = useAppSelector(selectTaskIsEditing);
   const { projectId } = useParams();
+  const setDefaultValues = () => {
+    let defaultValues = {};
+    if (isEditingTask) {
+      defaultValues = {
+        taskName: task?.taskName,
+        taskPriority: task?.taskPriority,
+        taskState: task?.taskState,
+        taskDescription: task?.taskDescription,
+        taskAssignedTo: task?.taskAssignedTo,
+        taskCreationDate: dayjs(new Date()),
+        taskEndDate: dayjs(new Date())
+      };
+    } else {
+      defaultValues = {
+        taskName: undefined,
+        taskPriority: undefined,
+        taskState: undefined,
+        taskDescription: undefined,
+        taskAssignedTo: undefined,
+        taskCreationDate: dayjs(new Date()),
+        taskEndDate: dayjs(new Date())
+      };
+    }
+    return defaultValues;
+  };
   const {
     handleSubmit,
     control,
     formState: { errors }
   } = useForm<TaskFormData>({
     resolver: yupResolver(validationSchema),
-    defaultValues: {
-      taskName: undefined,
-      taskPriority: undefined,
-      taskState: undefined,
-      taskDescription: undefined,
-      taskAssignedTo: undefined,
-      taskCreationDate: dayjs(new Date()),
-      taskEndDate: dayjs(new Date())
-    }
+    defaultValues: setDefaultValues()
   });
   const onSubmit = (values: TaskFormData) => {
     const taskId =
@@ -66,12 +92,13 @@ export const TaskForm = () => {
       taskAssignedTo: values.taskAssignedTo,
       taskCreationDate: values.taskCreationDate,
       taskEndDate: values.taskEndDate,
-      taskId: taskId,
+      taskId,
       projectId: projectId!
     };
     dispatch(addDbTask(newTask));
     dispatch(addTask(newTask));
     dispatch(close());
+    dispatch(isEditing(false));
     console.log(values);
   };
 
@@ -238,7 +265,10 @@ export const TaskForm = () => {
             color="primary"
             variant="contained"
             sx={{ marginLeft: "7px" }}
-            onClick={() => dispatch(close())}
+            onClick={() => {
+              dispatch(close());
+              dispatch(isEditing(false));
+            }}
           >
             Cancel
           </Button>

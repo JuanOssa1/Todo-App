@@ -15,3 +15,18 @@ export const parseTask = (doc: DocumentData) => {
   };
   return task;
 };
+
+export const parseDbTask = (task: Task) => {
+  const parsedTask = {
+    taskName: task.taskName,
+    taskPriority: task.taskPriority,
+    taskState: task.taskState,
+    taskDescription: task.taskDescription,
+    taskAssignedTo: task.taskAssignedTo,
+    taskCreationDate: task.taskCreationDate?.toDate().toDateString(),
+    taskEndDate: task.taskEndDate?.toDate().toLocaleDateString(),
+    taskId: task.taskId,
+    projectId: task.projectId!
+  };
+  return parsedTask;
+};

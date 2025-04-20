@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
 import {
@@ -27,7 +27,6 @@ import TaskFilter from "../features/tasks/TaskFilter";
 import { parseTask } from "../features/tasks/parser";
 import { Task } from "../features/tasks/types";
 
-// Material UI
 import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 
@@ -45,6 +44,10 @@ function Project() {
   const openPopOver = Boolean(anchorEl);
   const id = openPopOver ? "simple-popover" : undefined;
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const goPreviousPage = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     const tasks: Task[] = [];
@@ -83,7 +86,7 @@ function Project() {
             alignItems: "center"
           }}
         >
-          <PageTitle title="Hey is a Project" />
+          <PageTitle title="Hey is a Project" goPreviousPage={goPreviousPage} />
           <Box>
             <Filter aria-describedby={id} onClick={handleClick} />
             <Sort
