@@ -1,27 +1,44 @@
-import AddButton from "../features/ui/AddButton";
-import TaskItemList from "../features/tasks/TaskItemList";
-import TransitionsModal from "../features/ui/Modal";
+// React y Hooks
+import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { TaskForm } from "../features/tasks/TaskForm";
+import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addTask, open } from "../app/slice";
+import { useAppSelector } from "../app/hooks";
+
+// Redux
+import {
+  setTasks,
+  open,
+  markTasksAsLoaded,
+  selectTaskIsLoaded,
+  sortTasks,
+  sortDbTask
+} from "../app/slice";
+import { AppDispatch } from "../app/store";
+
+// Firebase
+import db from "../db/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore/lite";
+
+// Features - UI
+import AddButton from "../features/ui/AddButton";
+import Filter from "../features/ui/Filter";
 import Footer from "../features/ui/Footer";
 import Header from "../features/ui/Header";
+import TransitionsModal from "../features/ui/Modal";
+import PageTitle from "../features/ui/PageTitle";
+import Sort from "../features/ui/Sort";
+
+// Features - Tasks
+import { TaskForm } from "../features/tasks/TaskForm";
+import TaskItemList from "../features/tasks/TaskItemList";
+import TaskFilter from "../features/tasks/TaskFilter";
+import { parseTask } from "../features/tasks/parser";
+import { Task } from "../features/tasks/types";
+
+// Material UI
 import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
-import Filter from "../features/ui/Filter";
-import Sort from "../features/ui/Sort";
-import { MouseEvent, useEffect, useState } from "react";
-import PageTitle from "../features/ui/PageTitle";
-import TaskFilter from "../features/tasks/TaskFilter";
-import { collection, getDocs, query, where } from "firebase/firestore/lite";
-import db from "../db/firestore";
-import { parseTask } from "../features/tasks/parser";
-import { markTasksAsLoaded, selectTaskIsLoaded } from "../app/slice";
-import { useParams } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
-import { sortTasks, sortDbTask } from "../app/slice";
-import { AppDispatch } from "../app/store";
 
 function Project() {
   const { projectId } = useParams();
@@ -39,6 +56,7 @@ function Project() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
+    const tasks: Task[] = [];
     const getProjectsQuery = query(
       collection(db, "tasks"),
       where("projectId", "==", projectId)
@@ -47,8 +65,9 @@ function Project() {
       const querySnapshot = await getDocs(getProjectsQuery);
       querySnapshot.forEach(doc => {
         const task = parseTask(doc);
-        dispatch(addTask(task));
+        tasks.push(task);
       });
+      dispatch(setTasks(tasks));
     };
     dispatch(markTasksAsLoaded());
     if (taskLoaded) {

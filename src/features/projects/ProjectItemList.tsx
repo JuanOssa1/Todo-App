@@ -1,20 +1,21 @@
 import List from "@mui/material/List";
 import Item from "./ProjectItem";
 
-//import {ContentPaste} from "@mui/icons-material";
-
+/*
 interface Project {
   id: string;
   title: string;
 }
+
+Dont remove project item list will using projects in near future
 interface ProjectListProps {
   project: Project[];
-}
+}*/
 
-function ProjectItemList({ project }: ProjectListProps) {
+function ProjectItemList() {
   return (
     <List>
-      {["Cargill", "Novaventa", "M&M", "3M"].map(text => (
+      {["Test1", "Test 2", "Test 3", "Test 4"].map(text => (
         <Item key={text} title={text} icon={"content_paste"} />
       ))}
     </List>

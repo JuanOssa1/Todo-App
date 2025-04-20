@@ -13,25 +13,31 @@ import { collection, query, getDocs } from "firebase/firestore/lite";
 import db from "../db/firestore";
 import { useEffect } from "react";
 import { parseProject } from "../features/projects/parser";
-import { addProject, markAsLoaded } from "../app/slice";
+import { markAsLoaded } from "../app/slice";
+import { setProjects } from "../app/slice";
 import { selectIsLoaded } from "../app/slice";
 import { useAppSelector } from "../app/hooks";
+import { Project } from "../features/projects/types";
 
 function Home() {
   const dispatch = useDispatch();
   const projectsLoaded = useAppSelector(selectIsLoaded);
 
   useEffect(() => {
+    const projects: Project[] = [];
     const getProjectsQuery = query(collection(db, "projects"));
     const fetchProjects = async () => {
       const querySnapshot = await getDocs(getProjectsQuery);
       querySnapshot.forEach(doc => {
         const project = parseProject(doc);
-        dispatch(addProject(project));
+        projects.push(project);
       });
+      dispatch(setProjects(projects));
     };
     dispatch(markAsLoaded());
+
     if (projectsLoaded) {
+      console.log("Executed");
       fetchProjects();
     }
   }, [dispatch, projectsLoaded]);
