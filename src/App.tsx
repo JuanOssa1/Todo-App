@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Project from "./pages/Project";
 import Task from "./pages/Task";
-import "./App.css";
 
 function App() {
   return (
