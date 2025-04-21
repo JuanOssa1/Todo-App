@@ -31,7 +31,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   console.log(imageError);
 
   return (
-    <Card sx={{ minWidth: 200, maxWidth: 345, position: "relative" }}>
+    <Card
+      sx={{
+        height: "100%",
+        width: "100%",
+        minWidth: "190px",
+        display: "flex",
+        flexDirection: "column"
+      }}
+    >
       <IconButton
         onClick={() => {
           dispatch(open());
@@ -47,7 +55,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         component="img"
         alt="project image"
         height="140"
-        image={imageError ? defaultProjectImage : project.projectImageUrl}
+        image={
+          imageError || project.projectImageUrl === ""
+            ? defaultProjectImage
+            : project.projectImageUrl
+        }
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -57,7 +69,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.projectDescription}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ mt: "auto" }}>
         <Button ref={cardRef} size="small">
           <Link to={`project/${project.projectId}`}>More</Link>
         </Button>

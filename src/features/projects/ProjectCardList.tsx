@@ -11,11 +11,17 @@ export default function ProjectCardList() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid
         container
-        spacing={{ xs: 3, sm: 6, md: 15 }}
-        columns={{ xs: 4, sm: 7, md: 12 }}
+        spacing={{ xs: 3, sm: 3, md: 12 }}
+        columns={{ xs: 1, sm: 1, md: 12 }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          height: "100%"
+        }}
       >
         {projects.map(project => (
-          <Grid key={project.projectId} size={{ xs: 2, sm: 4, md: 4 }}>
+          <Grid key={project.projectId} size={{ xs: 2, sm: 2, md: 4 }}>
             <ProjectCard project={project} />
           </Grid>
         ))}
