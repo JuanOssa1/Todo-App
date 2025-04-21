@@ -17,7 +17,11 @@ function AddButton({ placeHolder, onClick }: AddButtonProps) {
       alignContent={"center"}
       justifyContent={"center"}
     >
-      <Button variant="contained" onClick={onClick}>
+      <Button
+        sx={{ textTransform: "none" }}
+        variant="contained"
+        onClick={onClick}
+      >
         {placeHolder}
       </Button>
     </Stack>

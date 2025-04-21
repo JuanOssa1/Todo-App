@@ -73,9 +73,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </Typography>
       </CardContent>
       <CardActions sx={{ mt: "auto" }}>
-        <Button ref={cardRef} size="small">
-          <Link to={`project/${project.projectId}`}>More</Link>
-        </Button>
+        <Link to={`project/${project.projectId}`}>
+          <Button>More</Button>
+        </Link>
         <Button
           onClick={() => {
             dispatch(removeDbProject(project.projectId));
