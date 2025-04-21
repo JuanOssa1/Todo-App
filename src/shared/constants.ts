@@ -11,3 +11,4 @@ export enum TaskState {
   Pending = "Pending",
   Empty = "None"
 }
+export const drawerWidth = 240;

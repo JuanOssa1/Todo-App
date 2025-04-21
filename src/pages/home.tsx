@@ -45,7 +45,7 @@ function Home() {
       </Header>
       <ProjectCardList />
       <Footer>
-        <AddButton placeHolder="Test" onClick={() => dispatch(open())} />
+        <AddButton placeHolder="Add Project" onClick={() => dispatch(open())} />
       </Footer>
     </>
   );

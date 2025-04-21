@@ -1,12 +1,13 @@
 import Box from "@mui/material/Box";
-import React from "react";
 import { HeaderProps } from "./types";
+import { drawerWidth } from "../../shared/constants";
 
 function Header({ children }: HeaderProps) {
   return (
     <Box
       sx={{
-        flexGrow: 1
+        flexGrow: 1,
+        width: { sm: `calc(95vw - ${drawerWidth}px)` }
       }}
     >
       {children}

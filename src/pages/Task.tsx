@@ -15,11 +15,13 @@ import TaskStatus from "../features/tasks/TaskStatus";
 import PageTitle from "../features/ui/PageTitle";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getTask } from "../features/tasks/taskSlice";
+import {
+  getTask,
+  selectActiveTsk,
+  removeDbTask
+} from "../features/tasks/taskSlice";
 import { AppDispatch } from "../app/store";
-import { selectActiveTsk } from "../features/tasks/taskSlice";
 import { useAppSelector } from "../app/hooks";
-import { removeDbTask } from "../features/tasks/taskSlice";
 import { useNavigate } from "react-router-dom";
 
 function Task() {
@@ -35,6 +37,7 @@ function Task() {
   const goPreviousPage = () => {
     navigate(-1);
   };
+  console.log(task?.taskAssignedTo);
 
   return (
     <>
@@ -56,7 +59,9 @@ function Task() {
           sx={{
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
+            width: "100%"
+            //ml: { sm: `${240}px` }
           }}
         >
           <PageTitle title={task?.taskName} goPreviousPage={goPreviousPage} />
@@ -89,7 +94,7 @@ function Task() {
             </Grid>
             <Grid size="grow">
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {task?.taskAssignedTo}
+                {!task?.taskAssignedTo ? "Unassigned" : task?.taskAssignedTo}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {task?.taskCreationDate?.toString()}

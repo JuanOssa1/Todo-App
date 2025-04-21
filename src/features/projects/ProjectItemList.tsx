@@ -1,14 +1,15 @@
 import List from "@mui/material/List";
 import Item from "./ProjectItem";
-import { useAppSelector } from "../../app/hooks";
-import { selectProjectList } from "./projectSlice";
 import Box from "@mui/material/Box";
 import { Snackbar, SnackbarCloseReason } from "@mui/material";
 import { useState } from "react";
 
 function ProjectItemList() {
-  const projects = useAppSelector(selectProjectList);
-
+  const randomData = [
+    { dataId: "1", title: "Features" },
+    { dataId: "2", title: "Coming" },
+    { dataId: "3", title: "Soon" }
+  ];
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -29,10 +30,10 @@ function ProjectItemList() {
     <>
       <Box component="button" onClick={handleClick}>
         <List>
-          {projects.map(project => (
+          {randomData.map(random => (
             <Item
-              key={project.projectId}
-              title={project.projectTitle}
+              key={random.dataId}
+              title={random.title}
               icon={"content_paste"}
             />
           ))}
