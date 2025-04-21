@@ -1,6 +1,5 @@
 import List from "@mui/material/List";
 import Item from "./ProjectItem";
-import Box from "@mui/material/Box";
 import { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 
@@ -21,17 +20,17 @@ function ProjectItemList() {
 
   return (
     <>
-      <Box component="button" onClick={handleClick}>
-        <List>
-          {randomData.map(random => (
-            <Item
-              key={random.dataId}
-              title={random.title}
-              icon={"content_paste"}
-            />
-          ))}
-        </List>
-      </Box>
+      <List>
+        {randomData.map(random => (
+          <Item
+            key={random.dataId}
+            title={random.title}
+            icon={"content_paste"}
+            onClick={handleClick}
+          />
+        ))}
+      </List>
+
       <Snackbar
         open={open}
         autoHideDuration={5000}
