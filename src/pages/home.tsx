@@ -8,39 +8,25 @@ import { open } from "../features/ui/modalSlice";
 import { useDispatch } from "react-redux";
 import Header from "../features/ui/Header";
 import PageTitle from "../features/ui/PageTitle";
-import { collection, query, getDocs } from "firebase/firestore/lite";
-import db from "../db/firestore";
 import { useEffect } from "react";
-import { parseProject } from "../features/projects/parser";
 import {
-  markAsLoaded,
-  setProjects,
-  selectIsLoaded
+  selectIsLoaded,
+  setDbProjects,
+  selectLoadingProject
 } from "../features/projects/projectSlice";
-
+import {} from "../features/projects/projectSlice";
 import { useAppSelector } from "../app/hooks";
-import { Project } from "../features/projects/types";
+import { AppDispatch } from "../app/store";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const projectsLoaded = useAppSelector(selectIsLoaded);
+  const isLoadingProjects = useAppSelector(selectLoadingProject);
 
   useEffect(() => {
-    const projects: Project[] = [];
-    const getProjectsQuery = query(collection(db, "projects"));
-    const fetchProjects = async () => {
-      const querySnapshot = await getDocs(getProjectsQuery);
-      querySnapshot.forEach(doc => {
-        const project = parseProject(doc);
-        projects.push(project);
-      });
-      dispatch(setProjects(projects));
-    };
-    dispatch(markAsLoaded());
-
-    if (projectsLoaded) {
-      fetchProjects();
-    }
+    dispatch(setDbProjects());
   }, [dispatch, projectsLoaded]);
 
   return (
@@ -51,6 +37,12 @@ function Home() {
         </TransitionsModal>,
         document.body
       )}
+      <Backdrop
+        sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={isLoadingProjects}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Header>
         <PageTitle goBack={false} title="Projects" />
       </Header>

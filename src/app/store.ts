@@ -2,18 +2,10 @@ import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { modalSlice } from "../features/ui/modalSlice";
-import {
-  projectSlice,
-  asyncProjectSlice
-} from "../features/projects/projectSlice";
+import { projectSlice } from "../features/projects/projectSlice";
 import { taskSlice } from "../features/tasks/taskSlice";
 
-const rootReducer = combineSlices(
-  modalSlice,
-  projectSlice,
-  taskSlice,
-  asyncProjectSlice
-);
+const rootReducer = combineSlices(modalSlice, projectSlice, taskSlice);
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {
