@@ -15,7 +15,8 @@ import {
   addDbTask,
   selectActiveTsk,
   selectTaskIsEditing,
-  isEditing
+  isEditing,
+  setTask
 } from "../../app/slice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,18 +46,18 @@ const textFieldStyle = {
 
 export const TaskForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const task = useAppSelector(selectActiveTsk);
+  const currentTask = useAppSelector(selectActiveTsk);
   const isEditingTask = useAppSelector(selectTaskIsEditing);
   const { projectId } = useParams();
   const setDefaultValues = () => {
     let defaultValues = {};
     if (isEditingTask) {
       defaultValues = {
-        taskName: task?.taskName,
-        taskPriority: task?.taskPriority,
-        taskState: task?.taskState,
-        taskDescription: task?.taskDescription,
-        taskAssignedTo: task?.taskAssignedTo,
+        taskName: currentTask?.taskName,
+        taskPriority: currentTask?.taskPriority,
+        taskState: currentTask?.taskState,
+        taskDescription: currentTask?.taskDescription,
+        taskAssignedTo: currentTask?.taskAssignedTo,
         taskCreationDate: dayjs(new Date()),
         taskEndDate: dayjs(new Date())
       };
@@ -96,8 +97,15 @@ export const TaskForm = () => {
       taskId,
       projectId: projectId!
     };
-    dispatch(addDbTask(newTask));
-    dispatch(addTask(newTask));
+
+    if (isEditingTask && currentTask) {
+      const updatedTask = { ...newTask, taskId: currentTask?.taskId };
+      dispatch(addDbTask(updatedTask));
+      dispatch(setTask(updatedTask));
+    } else {
+      dispatch(addDbTask(newTask));
+      dispatch(addTask(newTask));
+    }
     dispatch(close());
     dispatch(isEditing(false));
   };

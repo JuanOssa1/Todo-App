@@ -9,32 +9,33 @@ import { TaskPriority } from "../../shared/constants";
 import { Task } from "./types";
 import { Link } from "react-router-dom";
 
-const defineIconType = (priority?: TaskPriorityType) => {
-  switch (priority) {
-    case TaskPriority.High:
-      return "priority_high";
-
-    case TaskPriority.Medium:
-      return "notification_important";
-
-    case TaskPriority.Low:
-      return "low_priority";
-
-    default:
-      return "low_priority";
-      break;
-  }
-};
 export interface TaskItemProps {
   task: Task;
 }
 
 function TaskItem({ task }: TaskItemProps) {
+  const color = (priority?: TaskPriorityType) => {
+    switch (priority) {
+      case TaskPriority.High:
+        return "error";
+
+      case TaskPriority.Medium:
+        return "warning";
+
+      case TaskPriority.Low:
+        return "info";
+
+      default:
+        return "info";
+    }
+  };
+  console.log(task.taskState);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid size={2}>
-          <Icon>{defineIconType(task.taskPriority)}</Icon>
+          <Icon color={color(task.taskPriority)}>{"priority_high"}</Icon>
         </Grid>
         <Grid size="grow">
           <Typography
@@ -57,7 +58,7 @@ function TaskItem({ task }: TaskItemProps) {
           </Typography>
         </Grid>
         <Grid size="grow">
-          <TaskStatus taskStatus={task.taskState!} />
+          <TaskStatus taskStatus={task.taskState} />
         </Grid>
         <Grid size="grow">
           <IconButton>

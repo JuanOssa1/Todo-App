@@ -37,7 +37,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         width: "100%",
         minWidth: "190px",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        position: "relative"
       }}
     >
       <IconButton
@@ -45,7 +46,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           dispatch(open());
           dispatch(selectProject(project.projectId));
         }}
-        sx={{ position: "absolute", top: "8px", right: "16px", margin: 0 }}
+        sx={{
+          position: "absolute",
+          top: "8px",
+          right: "16px",
+          margin: 0
+        }}
       >
         <Icon>{"edit"}</Icon>
       </IconButton>
