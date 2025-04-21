@@ -1,54 +1,26 @@
-# React + TypeScript + Vite
+# Task Management App
+## _Pasos para ejecutar_
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+git clone https://github.com/JuanOssa1/omni.pro_technical_assessment.git
+npm i
+npm run dev
 ```
+La arquitectura utilizada fue un hibrido entre feature-driven y type, es decir, las estructura por una parte está definida por features y la otra por tipos. La idea detrás de esto es que cuando el developer entre al desarrollar entienda de manera rápida en que consiste el proyecto sin necesidad de dar tantas vueltas. Por otra parte, se mantienen cierta estructura por tipos, de tal forma que también sea fácil desde una perspectiva de desarrollo
+## Decisiones tecnicas clave
+No hay una arquitectura ni una solución perfecta todas tienen sus pros y sus cons, en concreto en este proyecto se quiso priorizar la escalabilidad
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Framework: React, tengo experiencia con él, está bien documentado y facilita muchas tareas que en JS Vanilla resultan dispendiosas. Por otro lado, hice uso de TypeScript facilita mucho el desarrollo y la escalabilidad.
+- Manejo del estado: Redux, ofrece un rendimiento excelente y logra centralizar el estado de la aplicación evitando el “prop drilling” quizás un poco “overkill” pero como mencione anteriormente la idea era priorizar la escalabilidad.
+- Manejo de los forms: Si bien considere redux por su flexibilidad y formik por su simpleza al final opte por react hook forms, puesto que era lo suficientemente flexible y permitía una implementación medianamente sencilla con MUI. Por otro lado, también es escalable puesto que es una librería bastante conocida por su rendimiento.
+- Estilos: Escogí la librería de MUI por un lado me encuentro familiarizada con ella por experiencias previas y por el otro está muy bien y respaldada por google, tiene la pequeña desventaja de que la mayoría de sus estilos de manejan in-line y en principio esto podría parecer una mala practica la realidad es que así es su funcionamiento esperado. Pero tiene un gran plus, nativamente es accesible.
+- Navegación: Escogí React router, facil implementación, escalable no hay mucho que agregar en este apartado.
+- Persistencia: Firestore, en oportunidades previas he trabajado con el y es una herramienta muy versátil que se integra muy bien con el desarrollo web. La única desventaja es que para esta aplicación en concreto en la que los proyectos tienen relacionadas tareas lo ideal hubiera sido SQL, sin embargo, las queries en firestore están muy optimizadas.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Oportunidades de mejora
+Me encuentro satisfecho con el resultado final solo hay un par de cosas que mas que mejorar me gustaría terminar. 
+- Mejorar el tema de las importaciones de los archivos esto se puede solucionar mediante un archivo index.
+- Terminar el error handling y dar feedback de este al usuario cuando sea necesario, de momento estos se imprimen por consola seria integrarlos a la UI
+- Realizar paginación/lazy loading, sinceramente me quede sin tiempo, pero la idea es realizar una paginación con un infinite scroll, cuando se detecte que el usuario ha llegado al final de la página se ejecutaría una función loadMore() 
+- Continuar el desarrollo de nuevas features
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
