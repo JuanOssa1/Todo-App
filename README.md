@@ -23,4 +23,6 @@ Me encuentro satisfecho con el resultado final solo hay un par de cosas que mas 
 - Terminar el error handling y dar feedback de este al usuario cuando sea necesario, de momento estos se imprimen por consola seria integrarlos a la UI
 - Realizar paginación/lazy loading, sinceramente me quede sin tiempo, pero la idea es realizar una paginación con un infinite scroll, cuando se detecte que el usuario ha llegado al final de la página se ejecutaría una función loadMore() 
 - Continuar el desarrollo de nuevas features
+## Notas
+El firestore.ts con los secrets se encuentra subido en el repositorio por fines practicos, en un escenario real esto NO debe realizarse 
 
