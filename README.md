@@ -18,10 +18,9 @@ No hay una arquitectura ni una solución perfecta todas tienen sus pros y sus co
 - Persistencia: Firestore, en oportunidades previas he trabajado con el y es una herramienta muy versátil que se integra muy bien con el desarrollo web. La única desventaja es que para esta aplicación en concreto en la que los proyectos tienen relacionadas tareas lo ideal hubiera sido SQL, sin embargo, las queries en firestore están muy optimizadas.
 
 ## Oportunidades de mejora
-Me encuentro satisfecho con el resultado final solo hay un par de cosas que mas que mejorar me gustaría terminar. 
 - Mejorar el tema de las importaciones de los archivos esto se puede solucionar mediante un archivo index.
 - Terminar el error handling y dar feedback de este al usuario cuando sea necesario, de momento estos se imprimen por consola seria integrarlos a la UI
-- Realizar paginación/lazy loading, sinceramente me quede sin tiempo, pero la idea es realizar una paginación con un infinite scroll, cuando se detecte que el usuario ha llegado al final de la página se ejecutaría una función loadMore() 
+- Realizar paginación/lazy loading, idea es realizar una paginación con un infinite scroll, cuando se detecte que el usuario ha llegado al final de la página se ejecutaría una función loadMore() 
 - Continuar el desarrollo de nuevas features
 ## Notas
 El firestore.ts con los secrets se encuentra subido en el repositorio por fines practicos, en un escenario real esto NO debe realizarse 
