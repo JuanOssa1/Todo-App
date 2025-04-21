@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { close, selectOpen } from "../../app/slice";
-import { selectProject } from "../../app/slice";
+import { selectProject } from "../projects/projectSlice";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../app/hooks";
 import { ModalProps } from "./types";

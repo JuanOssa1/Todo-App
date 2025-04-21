@@ -13,9 +13,12 @@ import { collection, query, getDocs } from "firebase/firestore/lite";
 import db from "../db/firestore";
 import { useEffect } from "react";
 import { parseProject } from "../features/projects/parser";
-import { markAsLoaded } from "../app/slice";
-import { setProjects } from "../app/slice";
-import { selectIsLoaded } from "../app/slice";
+import {
+  markAsLoaded,
+  setProjects,
+  selectIsLoaded
+} from "../features/projects/projectSlice";
+
 import { useAppSelector } from "../app/hooks";
 import { Project } from "../features/projects/types";
 

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import ProjectCard from "./ProjectCard";
-import { selectProjectList } from "../../app/slice";
+import { selectProjectList } from "./projectSlice";
 import { useAppSelector } from "../../app/hooks";
 
 export default function ProjectCardList() {

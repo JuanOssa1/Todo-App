@@ -3,13 +3,14 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { close, addDbProject } from "../../app/slice";
+import { addDbProject } from "./projectSlice";
+import { close } from "../../app/slice";
 import {
   addProject,
   editProject,
   selectSelectedProject,
   selectProject
-} from "../../app/slice";
+} from "./projectSlice";
 
 import { Project, ProjectFormData } from "./types";
 import { yupResolver } from "@hookform/resolvers/yup";
