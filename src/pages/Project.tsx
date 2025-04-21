@@ -7,6 +7,7 @@ import {
   setTasks,
   markTasksAsLoaded,
   selectTaskIsLoaded,
+  selectIsLoadingTask,
   sortTasks,
   sortDbTask
 } from "../features/tasks/taskSlice";
@@ -26,9 +27,11 @@ import TaskItemList from "../features/tasks/TaskItemList";
 import TaskFilter from "../features/tasks/TaskFilter";
 import { parseTask } from "../features/tasks/parser";
 import { Task } from "../features/tasks/types";
+import Backdrop from "@mui/material/Backdrop";
 
 import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
+import { CircularProgress } from "@mui/material";
 
 function Project() {
   const { projectId } = useParams();
@@ -37,6 +40,7 @@ function Project() {
     setAnchorEl(event.currentTarget);
   };
   const taskLoaded = useAppSelector(selectTaskIsLoaded);
+  const isLoadingTask = useAppSelector(selectIsLoadingTask);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -77,6 +81,14 @@ function Project() {
         </TransitionsModal>,
         document.body
       )}
+
+      <Backdrop
+        sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={isLoadingTask}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Header>
         <Box
           display="flex"
