@@ -6,6 +6,9 @@ git clone https://github.com/JuanOssa1/omni.pro_technical_assessment.git
 npm i
 npm run dev
 ```
+## _O accede de manera remota desde este link_
+https://omni-pro-technical-assessment.vercel.app/ 
+
 La arquitectura utilizada fue un hibrido entre feature-driven y type, es decir, las estructura por una parte está definida por features y la otra por tipos. La idea detrás de esto es que cuando el developer entre al desarrollar entienda de manera rápida en que consiste el proyecto sin necesidad de dar tantas vueltas. Por otra parte, se mantienen cierta estructura por tipos, de tal forma que también sea fácil desde una perspectiva de desarrollo
 ## Decisiones tecnicas clave
 No hay una arquitectura ni una solución perfecta todas tienen sus pros y sus cons, en concreto en este proyecto se quiso priorizar la escalabilidad
