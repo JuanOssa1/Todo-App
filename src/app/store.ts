@@ -1,8 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { modalSlice } from "./slice";
-//import { projectSlice } from "./slice";
+import { modalSlice } from "../features/ui/modalSlice";
 import {
   projectSlice,
   asyncProjectSlice

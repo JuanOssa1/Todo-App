@@ -11,13 +11,13 @@ import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
   addTask,
-  close,
   addDbTask,
   selectActiveTsk,
   selectTaskIsEditing,
   isEditing,
   setTask
 } from "../../app/slice";
+import { close } from "../ui/modalSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";

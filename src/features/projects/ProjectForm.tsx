@@ -4,7 +4,8 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addDbProject } from "./projectSlice";
-import { close } from "../../app/slice";
+
+import { close } from "../ui/modalSlice";
 import {
   addProject,
   editProject,

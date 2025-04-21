@@ -5,12 +5,12 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
 import {
   setTasks,
-  open,
   markTasksAsLoaded,
   selectTaskIsLoaded,
   sortTasks,
   sortDbTask
 } from "../app/slice";
+import { open } from "../features/ui/modalSlice";
 import { AppDispatch } from "../app/store";
 import db from "../db/firestore";
 import { collection, getDocs, query, where } from "firebase/firestore/lite";

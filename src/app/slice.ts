@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 import {
   collection,
   deleteDoc,
@@ -26,7 +26,6 @@ interface TaskSliceState {
   taskActive?: Task;
   taskBeingEdited: boolean;
 }
-const initialModalState = { isOpen: false };
 
 const initialTaskState: TaskSliceState = {
   tasks: [],
@@ -42,22 +41,6 @@ const initialTaskState: TaskSliceState = {
   },
   taskBeingEdited: false
 };
-
-export const modalSlice = createSlice({
-  name: "modal",
-  initialState: initialModalState,
-  reducers: create => ({
-    open: create.reducer(state => {
-      state.isOpen = true;
-    }),
-    close: create.reducer(state => {
-      state.isOpen = false;
-    })
-  }),
-  selectors: {
-    selectOpen: modal => modal.isOpen
-  }
-});
 
 interface filterThunk {
   taskPriority?: string;
@@ -186,15 +169,9 @@ export const {
   isEditing
 } = taskSlice.actions;
 
-export const { open, close } = modalSlice.actions;
-
 export const {
   selectTaskIsLoaded,
   selectTaskList,
   selectActiveTsk,
   selectTaskIsEditing
 } = taskSlice.selectors;
-
-export const { selectOpen } = modalSlice.selectors;
-
-//export default store;

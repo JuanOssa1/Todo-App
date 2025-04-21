@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
-import { open } from "../../app/slice";
+import { open } from "../ui/modalSlice";
 import { useRef, useState } from "react";
 import { Project } from "./types";
 import { selectProject, removeProject, removeDbProject } from "./projectSlice";

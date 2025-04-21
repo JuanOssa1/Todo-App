@@ -4,8 +4,7 @@ import TransitionsModal from "../features/ui/Modal";
 import Footer from "../features/ui/Footer";
 import { ProjectForm } from "../features/projects/ProjectForm";
 import { createPortal } from "react-dom";
-import { open } from "../app/slice";
-
+import { open } from "../features/ui/modalSlice";
 import { useDispatch } from "react-redux";
 import Header from "../features/ui/Header";
 import PageTitle from "../features/ui/PageTitle";
