@@ -7,9 +7,9 @@ import Header from "../features/ui/Header";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-import { IconButton } from "@mui/material";
+import { Backdrop, CircularProgress, IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { isEditing } from "../features/tasks/taskSlice";
+import { isEditing, selectIsLoadingTask } from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import TaskStatus from "../features/tasks/TaskStatus";
 import PageTitle from "../features/ui/PageTitle";
@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 function Task() {
   const dispatch = useDispatch<AppDispatch>();
   const task = useAppSelector(selectActiveTsk);
+  const isLoadingTask = useAppSelector(selectIsLoadingTask);
   const navigate = useNavigate();
   const { taskId } = useParams();
   useEffect(() => {
@@ -43,6 +44,12 @@ function Task() {
         </TransitionsModal>,
         document.body
       )}
+      <Backdrop
+        sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={isLoadingTask}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Header>
         <Box
           display="flex"

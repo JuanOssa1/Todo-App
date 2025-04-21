@@ -6,14 +6,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Icon from "@mui/material/Icon";
 
 interface ItemProps {
-  key?: string;
+  id?: string;
   title: string;
   icon: string;
 }
 
-function ProjectItem({ key, title, icon }: ItemProps) {
+function ProjectItem({ id, title, icon }: ItemProps) {
   return (
-    <ListItem key={key} disablePadding>
+    <ListItem key={id} disablePadding>
       <ListItemButton>
         <ListItemIcon>
           <Icon>{icon}</Icon>

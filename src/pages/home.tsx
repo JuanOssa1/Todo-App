@@ -10,11 +10,9 @@ import Header from "../features/ui/Header";
 import PageTitle from "../features/ui/PageTitle";
 import { useEffect } from "react";
 import {
-  selectIsLoaded,
   setDbProjects,
   selectLoadingProject
 } from "../features/projects/projectSlice";
-import {} from "../features/projects/projectSlice";
 import { useAppSelector } from "../app/hooks";
 import { AppDispatch } from "../app/store";
 import Backdrop from "@mui/material/Backdrop";
@@ -22,12 +20,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const projectsLoaded = useAppSelector(selectIsLoaded);
   const isLoadingProjects = useAppSelector(selectLoadingProject);
 
   useEffect(() => {
     dispatch(setDbProjects());
-  }, [dispatch, projectsLoaded]);
+  }, [dispatch]);
 
   return (
     <>
