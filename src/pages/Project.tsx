@@ -4,17 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
 import {
-  setTasks,
-  markTasksAsLoaded,
-  selectTaskIsLoaded,
   selectIsLoadingTask,
   sortTasks,
   sortDbTask
 } from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import { AppDispatch } from "../app/store";
-import db from "../db/firestore";
-import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import AddButton from "../features/ui/AddButton";
 import Filter from "../features/ui/Filter";
 import Footer from "../features/ui/Footer";
@@ -25,10 +20,9 @@ import Sort from "../features/ui/Sort";
 import { TaskForm } from "../features/tasks/TaskForm";
 import TaskItemList from "../features/tasks/TaskItemList";
 import TaskFilter from "../features/tasks/TaskFilter";
-import { parseTask } from "../features/tasks/parser";
-import { Task } from "../features/tasks/types";
-import Backdrop from "@mui/material/Backdrop";
 
+import Backdrop from "@mui/material/Backdrop";
+import { getDbTasks } from "../features/tasks/taskSlice";
 import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import { CircularProgress } from "@mui/material";
@@ -39,7 +33,6 @@ function Project() {
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const taskLoaded = useAppSelector(selectTaskIsLoaded);
   const isLoadingTask = useAppSelector(selectIsLoadingTask);
 
   const handleClose = () => {
@@ -54,24 +47,8 @@ function Project() {
   };
 
   useEffect(() => {
-    const tasks: Task[] = [];
-    const getProjectsQuery = query(
-      collection(db, "tasks"),
-      where("projectId", "==", projectId)
-    );
-    const fetchTasks = async () => {
-      const querySnapshot = await getDocs(getProjectsQuery);
-      querySnapshot.forEach(doc => {
-        const task = parseTask(doc);
-        tasks.push(task);
-      });
-      dispatch(setTasks(tasks));
-    };
-    dispatch(markTasksAsLoaded());
-    if (taskLoaded) {
-      fetchTasks();
-    }
-  }, [dispatch, projectId, taskLoaded]);
+    dispatch(getDbTasks(projectId!));
+  }, [dispatch, projectId]);
 
   return (
     <>

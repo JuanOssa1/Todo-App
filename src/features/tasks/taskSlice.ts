@@ -106,6 +106,27 @@ export const taskSlice = createAppSlice({
         thunkAPI.dispatch(setTaskLoading(false));
       }
     }),
+    getDbTasks: create.asyncThunk(async (projectId: string, thunkAPI) => {
+      try {
+        thunkAPI.dispatch(setTaskLoading(true));
+        const tasks: Task[] = [];
+        const getProjectsQuery = query(
+          collection(db, "tasks"),
+          where("projectId", "==", projectId)
+        );
+        const querySnapshot = await getDocs(getProjectsQuery);
+        querySnapshot.forEach(doc => {
+          const task = parseTask(doc);
+          tasks.push(task);
+        });
+        thunkAPI.dispatch(setTasks(tasks));
+        thunkAPI.dispatch(markTasksAsLoaded());
+      } catch (error) {
+        console.log(error);
+      } finally {
+        thunkAPI.dispatch(setTaskLoading(false));
+      }
+    }),
     addDbTask: create.asyncThunk(async (task: Task, thunkAPI) => {
       try {
         thunkAPI.dispatch(setTaskLoading(true));
@@ -204,7 +225,8 @@ export const {
   getTask,
   setTask,
   isEditing,
-  setTaskLoading
+  setTaskLoading,
+  getDbTasks
 } = taskSlice.actions;
 
 export const {
