@@ -23,5 +23,5 @@ No hay una arquitectura ni una solución perfecta todas tienen sus pros y sus co
 - Realizar paginación/lazy loading, idea es realizar una paginación con un infinite scroll, cuando se detecte que el usuario ha llegado al final de la página se ejecutaría una función loadMore() 
 - Continuar el desarrollo de nuevas features
 ## Notas
-El firestore.ts con los secrets se encuentra subido en el repositorio por fines practicos, en un escenario real esto NO debe realizarse 
+El firestore.ts con los secrets se encuentra subido en el repositorio por fines practicos
 
