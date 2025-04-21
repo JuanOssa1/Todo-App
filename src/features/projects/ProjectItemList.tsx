@@ -1,8 +1,8 @@
 import List from "@mui/material/List";
 import Item from "./ProjectItem";
 import Box from "@mui/material/Box";
-import { Snackbar, SnackbarCloseReason } from "@mui/material";
 import { useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
 
 function ProjectItemList() {
   const randomData = [
@@ -15,14 +15,7 @@ function ProjectItemList() {
   const handleClick = () => {
     setOpen(true);
   };
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
+  const handleClose = () => {
     setOpen(false);
   };
 
