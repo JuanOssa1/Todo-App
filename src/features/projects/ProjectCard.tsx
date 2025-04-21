@@ -26,7 +26,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const handleImageError = () => {
     setImageError(true);
   };
-  console.log(imageError);
 
   return (
     <Card

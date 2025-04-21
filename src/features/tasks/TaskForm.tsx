@@ -16,7 +16,7 @@ import {
   selectTaskIsEditing,
   isEditing,
   setTask
-} from "../../app/slice";
+} from "./taskSlice";
 import { close } from "../ui/modalSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

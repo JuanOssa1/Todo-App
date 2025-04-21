@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import { MouseEventHandler } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { filterDbTask, setFilters } from "../../app/slice";
+import { filterDbTask, setFilters } from "./taskSlice";
 import { AppDispatch } from "../../app/store";
 
 interface TaskFilterForm {

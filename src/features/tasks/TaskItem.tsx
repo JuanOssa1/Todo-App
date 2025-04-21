@@ -29,7 +29,6 @@ function TaskItem({ task }: TaskItemProps) {
         return "info";
     }
   };
-  console.log(task.taskState);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

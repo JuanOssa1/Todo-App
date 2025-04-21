@@ -10,11 +10,11 @@ import {
   setDoc,
   where
 } from "firebase/firestore/lite";
-import db from "../db/firestore";
-import { createAppSlice } from "./createAppSlice";
-import { Task } from "../features/tasks/types";
-import { RootState } from "./store";
-import { parseTask } from "../features/tasks/parser";
+import db from "../../db/firestore";
+import { createAppSlice } from "../../app/createAppSlice";
+import { Task } from "./types";
+import { RootState } from "../../app/store";
+import { parseTask } from "./parser";
 
 interface TaskSliceState {
   tasks: Task[];

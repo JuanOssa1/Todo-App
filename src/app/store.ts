@@ -6,7 +6,7 @@ import {
   projectSlice,
   asyncProjectSlice
 } from "../features/projects/projectSlice";
-import { taskSlice } from "./slice";
+import { taskSlice } from "../features/tasks/taskSlice";
 
 const rootReducer = combineSlices(
   modalSlice,

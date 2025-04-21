@@ -9,17 +9,17 @@ import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { isEditing } from "../app/slice";
+import { isEditing } from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import TaskStatus from "../features/tasks/TaskStatus";
 import PageTitle from "../features/ui/PageTitle";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getTask } from "../app/slice";
+import { getTask } from "../features/tasks/taskSlice";
 import { AppDispatch } from "../app/store";
-import { selectActiveTsk } from "../app/slice";
+import { selectActiveTsk } from "../features/tasks/taskSlice";
 import { useAppSelector } from "../app/hooks";
-import { removeDbTask } from "../app/slice";
+import { removeDbTask } from "../features/tasks/taskSlice";
 import { useNavigate } from "react-router-dom";
 
 function Task() {

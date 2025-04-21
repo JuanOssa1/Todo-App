@@ -9,7 +9,7 @@ import {
   selectTaskIsLoaded,
   sortTasks,
   sortDbTask
-} from "../app/slice";
+} from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import { AppDispatch } from "../app/store";
 import db from "../db/firestore";
