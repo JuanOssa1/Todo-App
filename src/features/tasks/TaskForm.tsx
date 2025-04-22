@@ -247,7 +247,7 @@ export const TaskForm = () => {
           )}
         />
         <Controller
-          name="taskCreationDate"
+          name="taskEndDate"
           control={control}
           render={({ field }) => (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
