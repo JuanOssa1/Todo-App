@@ -61,7 +61,6 @@ function Task() {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%"
-            //ml: { sm: `${240}px` }
           }}
         >
           <PageTitle title={task?.taskName} goPreviousPage={goPreviousPage} />
@@ -71,9 +70,13 @@ function Task() {
       <Box
         sx={{
           display: "flex",
-          fontSize: "28px"
+          fontSize: "28px",
+          flexDirection: "column"
         }}
       >
+        <Typography variant="h6" sx={{ color: "text.secondary" }}>
+          Description:
+        </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {task?.taskDescription}
         </Typography>
