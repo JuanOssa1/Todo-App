@@ -27,7 +27,10 @@ export interface CreateProjectResponse {
 export interface UpdateProjectResponse {
     updateProject: ProjectResponse; 
 }
-export interface ProjectsResponse {
+export interface GetProjectResponse {
+    projects: ProjectResponse; 
+}
+export interface GetProjectsResponse {
     projects: ProjectResponse[]; 
 }
 
@@ -38,9 +41,7 @@ export interface CreateProjectVariables {
         imageUrl?: string;
     }
 }
-export interface DeleteProjectVariables {
-    projectId: string;
-}
+
 export interface UpdateProjectVariables extends CreateProjectVariables {
     projectId: string;
 }

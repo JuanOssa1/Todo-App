@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
+import { GetProjectResponse } from "../../features/projects/types";
 
 const GET_PROJECT_QUERY = gql`
     query project($projectId: String!) {
@@ -16,7 +17,7 @@ const GET_PROJECT_QUERY = gql`
     }
 `
 const useGetProject = (id : string) => {
-    const {error, loading, data, refetch} = useQuery(GET_PROJECT_QUERY,{
+    const {error, loading, data, refetch} = useQuery<GetProjectResponse, { projectId: string }>(GET_PROJECT_QUERY,{
         variables: {projectId: id},
         fetchPolicy: "cache-first"
     });
