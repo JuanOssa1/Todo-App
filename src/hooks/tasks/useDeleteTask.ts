@@ -4,17 +4,16 @@ import { useMutation } from "@apollo/client/react";
 
 const DELETE_TASK_QUERY = gql`
     mutation deleteTask($taskId: String!){
-        deleteTask(id: $taskId){
-            id
-            name
-        }
+        deleteTask(id: $taskId)
     }
 `
 const useDeleteTask = (taskId: string) => {
-    const [deleteTask, {error, loading, data}] =  useMutation<Boolean>(DELETE_TASK_QUERY,{
+    const [deleteTask, {error, loading, data}] =  useMutation<Boolean>(
+        DELETE_TASK_QUERY,{
         variables: {
-            id: taskId
-        }
+            taskId
+        },
+        fetchPolicy: "no-cache"
     })
     return {deleteTask, error, loading, data}
 }

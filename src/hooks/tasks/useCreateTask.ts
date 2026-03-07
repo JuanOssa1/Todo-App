@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
-import { CreateTaskResponse, CreateTaskVariables, TaskResponse } from "../../features/tasks/types";
+import { CreateTaskResponse, CreateTaskVariables } from "../../features/tasks/types";
 
 const CREATE_TASK_QUERY = gql`
     mutation createTask($input: CreateTaskInput!){

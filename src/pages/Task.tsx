@@ -30,7 +30,7 @@ function Task() {
   const dispatch = useDispatch<AppDispatch>();
   const task = useAppSelector(selectActiveTsk);
   const navigate = useNavigate();
-  const { taskId } = useParams();
+  const { projectId, taskId } = useParams();
   const { deleteTask } = useDeleteTask(taskId!);
   const {data, loading} =  useGetTask(taskId!);
 
@@ -42,7 +42,7 @@ function Task() {
   }, [dispatch, taskId, data]);
 
   const goPreviousPage = () => {
-    navigate(-1);
+    navigate(`/project/${projectId}`, { replace: true });
   };
 
   return (

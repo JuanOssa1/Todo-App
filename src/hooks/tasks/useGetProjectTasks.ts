@@ -20,7 +20,7 @@ const GET_PROJECT_TASKS_QUERY = gql`
 const useGetProjectTasks = (projectId: string) => {
     const {error, loading, data, refetch} = useQuery<GetProjectTasksResponse>(GET_PROJECT_TASKS_QUERY, {
         variables: {projectId},
-        fetchPolicy: "cache-first"
+        fetchPolicy: "network-only"
     })
     return {error, loading, data, refetch}
 }
