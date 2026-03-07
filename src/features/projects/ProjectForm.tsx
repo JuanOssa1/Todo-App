@@ -3,68 +3,92 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addDbProject } from "./projectSlice";
 
 import { close } from "../ui/modalSlice";
 import {
   addProject,
   editProject,
   selectSelectedProject,
-  selectProject
+  selectProject,
 } from "./projectSlice";
 
-import { Project, ProjectFormData } from "./types";
+import { Project, ProjectFormData, ProjectInput } from "./types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { useAppSelector } from "../../app/hooks";
 import { AppDispatch } from "../../app/store";
+import useCreateProject from "../../hooks/projects/useCreateProject";
+import useUpdateProject from "../../hooks/projects/useUpdateProject";
+import {
+  mapProjectFormDataToProjectInput,
+  mapProjectResponseToProject,
+} from "./projectMappers";
 
 const validationSchema: yup.ObjectSchema<ProjectFormData> = yup.object({
   projectTitle: yup.string().required("Title is required"),
   projectDescription: yup.string(),
-  projectImageUrl: yup.string()
+  projectImageUrl: yup.string(),
 });
 const textFieldStyle = {
-  marginBottom: "13px"
+  marginBottom: "13px",
 };
 
 export const ProjectForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { createProject } = useCreateProject();
+  const { updateProject } = useUpdateProject();
   const currentProject = useAppSelector(selectSelectedProject);
   const {
     handleSubmit,
     control,
-    formState: { errors }
+    formState: { errors },
   } = useForm<ProjectFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       projectTitle: currentProject?.projectTitle ?? "",
       projectDescription: currentProject?.projectDescription ?? "",
-      projectImageUrl: currentProject?.projectImageUrl ?? ""
-    }
+      projectImageUrl: currentProject?.projectImageUrl ?? "",
+    },
   });
+  
   const onSubmit = async (values: ProjectFormData) => {
-    const projectId =
-      Date.now().toString(36) + Math.random().toString(36).slice(2);
-    const newProject: Project = {
-      projectDescription: values.projectDescription,
-      projectImageUrl: values.projectImageUrl,
-      projectTitle: values.projectTitle,
-      projectId: currentProject?.projectId ?? projectId
-    };
-    dispatch(
-      addDbProject({
-        project: newProject,
-        currentProjectId: currentProject?.projectId ?? projectId
-      })
-    );
+    const projectInput = mapProjectFormDataToProjectInput(values);
     if (currentProject) {
-      dispatch(editProject(newProject));
+      updateProjectHelper(currentProject, projectInput);
     } else {
-      dispatch(addProject(newProject));
+      createProjectHelper(projectInput);
     }
     dispatch(close());
     dispatch(selectProject(undefined));
+  };
+
+  const updateProjectHelper = async (
+    currentProject: Project,
+    projectInput: ProjectInput,
+  ) => {
+    const result = await updateProject({
+      variables: {
+        projectId: currentProject.projectId,
+        input: projectInput,
+      },
+    });
+    if (result.data) {
+      const updatedProject = mapProjectResponseToProject(
+        result.data.updateProject,
+      );
+      dispatch(editProject(updatedProject));
+    }
+  };
+  const createProjectHelper = async (projectInput: ProjectInput) => {
+    const result = await createProject({
+      variables: {
+        input: projectInput,
+      },
+    });
+    if (result.data) {
+      const newProject = mapProjectResponseToProject(result.data.createProject);
+      dispatch(addProject(newProject));
+    }
   };
 
   return (

@@ -9,10 +9,9 @@ import { useDispatch } from "react-redux";
 import Header from "../features/ui/Header";
 import PageTitle from "../features/ui/PageTitle";
 import { useEffect } from "react";
-import {
-  setDbProjects,
-  selectLoadingProject
-} from "../features/projects/projectSlice";
+import {setProjects } from "../features/projects/projectSlice";
+import { mapProjectsResponseToProjects } from "../features/projects/projectMappers";
+import useGetProjects from "../hooks/projects/useGetProjects";
 import { useAppSelector } from "../app/hooks";
 import { AppDispatch } from "../app/store";
 import Backdrop from "@mui/material/Backdrop";
@@ -20,11 +19,15 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const isLoadingProjects = useAppSelector(selectLoadingProject);
+  //const isLoadingProjects = useAppSelector(selectLoadingProject);
+  const { loading, data } = useGetProjects();
 
   useEffect(() => {
-    dispatch(setDbProjects());
-  }, [dispatch]);
+    if (data) {
+      const projects = mapProjectsResponseToProjects(data.projects);
+      dispatch(setProjects(projects));
+    }
+  }, [data, dispatch]);
 
   return (
     <>
@@ -36,7 +39,7 @@ function Home() {
       )}
       <Backdrop
         sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-        open={isLoadingProjects}
+        open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

@@ -1,16 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Project } from "./types";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  setDoc
-} from "@firebase/firestore/lite";
 import { createAppSlice } from "../../app/createAppSlice";
-import db from "../../db/firestore";
-import { parseProject } from "./parser";
 
 interface ProjectSliceState {
   projects: Project[];
@@ -25,10 +15,6 @@ const initialProjectState: ProjectSliceState = {
   selectedProject: undefined,
   projectLoading: false
 };
-interface addDbProject {
-  currentProjectId: string;
-  project: Project;
-}
 
 export const projectSlice = createAppSlice({
   name: "project",
@@ -74,51 +60,9 @@ export const projectSlice = createAppSlice({
         state.projectLoading = action.payload;
       }
     ),
-    markAsLoaded: create.reducer(state => {
-      state.isLoaded = true;
-    }),
-    removeDbProject: create.asyncThunk(async (projectId: string, thunkAPI) => {
-      try {
-        thunkAPI.dispatch(setProjectLoading(true));
-        await deleteDoc(doc(db, "projects", projectId));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        thunkAPI.dispatch(setProjectLoading(false));
-      }
-    }),
-    addDbProject: create.asyncThunk(async (values: addDbProject, thunkAPI) => {
-      const { currentProjectId, project } = values;
-      try {
-        thunkAPI.dispatch(setProjectLoading(true));
-        await setDoc(doc(db, "projects", currentProjectId), project);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        thunkAPI.dispatch(setProjectLoading(false));
-      }
-    }),
-    setDbProjects: create.asyncThunk(async (_, thunkAPI) => {
-      const projects: Project[] = [];
-      const getProjectsQuery = query(collection(db, "projects"));
-      try {
-        thunkAPI.dispatch(setProjectLoading(true));
-        const querySnapshot = await getDocs(getProjectsQuery);
-        querySnapshot.forEach(doc => {
-          const project = parseProject(doc);
-          projects.push(project);
-        });
-        thunkAPI.dispatch(setProjects(projects));
-      } catch (error) {
-        console.log(error);
-      } finally {
-        thunkAPI.dispatch(setProjectLoading(false));
-      }
-    })
   }),
   selectors: {
     selectProjectList: project => project.projects,
-    selectIsLoaded: project => project.isLoaded,
     selectSelectedProject: project => project.selectedProject,
     selectCurrentProject: project => project.currentProject,
     selectLoadingProject: project => project.projectLoading
@@ -128,18 +72,14 @@ export const projectSlice = createAppSlice({
 export const {
   addProject,
   setProjects,
-  markAsLoaded,
   selectProject,
   editProject,
   removeProject,
-  removeDbProject,
-  addDbProject,
-  setDbProjects,
   setProjectLoading
 } = projectSlice.actions;
+
 export const {
   selectProjectList,
-  selectIsLoaded,
   selectSelectedProject,
   selectCurrentProject,
   selectLoadingProject

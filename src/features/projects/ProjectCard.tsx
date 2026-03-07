@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { open } from "../ui/modalSlice";
 import { useRef, useState } from "react";
 import { Project } from "./types";
-import { selectProject, removeProject, removeDbProject } from "./projectSlice";
+import { selectProject, removeProject } from "./projectSlice";
 import { AppDispatch } from "../../app/store";
 import { Link } from "react-router-dom";
 import defaultProjectImage from "./assets/defaultProjectImage.jpg";
@@ -78,7 +78,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </Link>
         <Button
           onClick={() => {
-            dispatch(removeDbProject(project.projectId));
+            //dispatch(removeDbProject(project.projectId));
             dispatch(removeProject(project.projectId));
           }}
           size="small"
