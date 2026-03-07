@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
+import useDeleteProject from "../../hooks/projects/useDeleteProject";
 import { useDispatch } from "react-redux";
 import { open } from "../ui/modalSlice";
 import { useRef, useState } from "react";
@@ -25,6 +26,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const cardRef = useRef(null);
   const handleImageError = () => {
     setImageError(true);
+  };
+  const { deleteProject } = useDeleteProject();
+  
+  const deleteProjectHelper = async (projectId: string) => {
+    await deleteProject({ variables: { projectId } });
+    dispatch(removeProject(projectId));
   };
 
   return (
@@ -78,8 +85,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </Link>
         <Button
           onClick={() => {
-            //dispatch(removeDbProject(project.projectId));
-            dispatch(removeProject(project.projectId));
+            deleteProjectHelper(project.projectId);
           }}
           size="small"
         >

@@ -38,6 +38,10 @@ export interface CreateProjectVariables {
         imageUrl?: string;
     }
 }
+export interface DeleteProjectVariables {
+    projectId: string;
+}
 export interface UpdateProjectVariables extends CreateProjectVariables {
     projectId: string;
 }
+
