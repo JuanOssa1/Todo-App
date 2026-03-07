@@ -9,16 +9,8 @@ const UPDATE_PROJECT_QUERY = gql`
         }
     }
 `
-const useUpdateProject = (projectId: string, name?: string, description?: string, imageUrl?: string) => {
+const useUpdateProject = () => {
     const [updateProject, {error, data, loading}] = useMutation(UPDATE_PROJECT_QUERY, {
-        variables:{
-            id: projectId,
-            input: {
-                title: name,
-                description,
-                imageUrl
-            }
-        },
         fetchPolicy: "no-cache"
     });
     return {updateProject, error, data, loading}

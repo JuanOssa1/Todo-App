@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client/react";
 
 
 const DELETE_TASK_QUERY = gql`
-    deleteTask($taskId: String!){
+    mutation deleteTask($taskId: String!){
         deleteTask(id: $taskId){
             id
             name

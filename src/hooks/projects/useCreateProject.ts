@@ -12,15 +12,8 @@ const CREATE_PROJECT_QUERY = gql`
         }
     }
 `
-const useCreateProject = (name: string, description: string, imageUrl?: string) => {
+const useCreateProject = () => {
     const [createProject, {error, data, loading}] = useMutation(CREATE_PROJECT_QUERY, {
-        variables: {
-            input: {
-                title: name,
-                description,
-                imageUrl
-            }
-        },
         fetchPolicy: "no-cache"
     })
     return {createProject, error, data, loading};
