@@ -2,13 +2,10 @@ import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 
 const UPDATE_PROJECT_QUERY = gql`
-    mutation updateProject($projectId: String!, $name: String, $description: String, $imagUrl: String){
-        updateProject(id: $projectId, title: $name, description: $description, imageUrl: $imagUrl) {
+    mutation updateProject($projectId: String!, $input: UpdateProjectInput!){
+        updateProject(id: $projectId, input: $input) {
             id
             title
-            description
-            createdAt
-            updatedAt
         }
     }
 `
@@ -16,9 +13,11 @@ const useUpdateProject = (projectId: string, name?: string, description?: string
     const [updateProject, {error, data, loading}] = useMutation(UPDATE_PROJECT_QUERY, {
         variables:{
             id: projectId,
-            title: name,
-            description,
-            imageUrl
+            input: {
+                title: name,
+                description,
+                imageUrl
+            }
         },
         fetchPolicy: "no-cache"
     });

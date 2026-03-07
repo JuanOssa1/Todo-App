@@ -24,3 +24,4 @@ const useGetProject = (id : string) => {
 }
 
 export default useGetProject;
+

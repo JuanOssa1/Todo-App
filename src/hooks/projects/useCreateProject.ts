@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 
 const CREATE_PROJECT_QUERY = gql`
-    mutation createProject($title: String!, $description: String!, $imageUrl: String){
-        createProject(title: $title, description: $description, imageUrl: $imageUrl) {
+    mutation createProject($input: CreateProjectInput!){
+        createProject(input: $input) {
             id
             title
             description
@@ -15,9 +15,11 @@ const CREATE_PROJECT_QUERY = gql`
 const useCreateProject = (name: string, description: string, imageUrl?: string) => {
     const [createProject, {error, data, loading}] = useMutation(CREATE_PROJECT_QUERY, {
         variables: {
-            title: name,
-            description,
-            imageUrl
+            input: {
+                title: name,
+                description,
+                imageUrl
+            }
         },
         fetchPolicy: "no-cache"
     })
