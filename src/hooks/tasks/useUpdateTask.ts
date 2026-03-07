@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
+import { TaskResponse, UpdateTaskInput, UpdateTaskResponse } from "../../features/tasks/types";
 
 const UPDATE_TASK_QUERY = gql`
     mutation updateTask($taskId: String!, $input: UpdateTaskInput!){
@@ -10,10 +11,10 @@ const UPDATE_TASK_QUERY = gql`
     }
 `
 const useUpdateTask = () => {
-    const [createTask, {error, loading, data}] = useMutation(UPDATE_TASK_QUERY, {
+    const [updateTask, {error, loading, data}] = useMutation<UpdateTaskResponse, UpdateTaskInput>(UPDATE_TASK_QUERY, {
         fetchPolicy: "no-cache"
     });
-    return {createTask, error, loading, data}
+    return {updateTask, error, loading, data}
 }
 
 export default useUpdateTask;

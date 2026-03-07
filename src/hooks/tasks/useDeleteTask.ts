@@ -11,7 +11,7 @@ const DELETE_TASK_QUERY = gql`
     }
 `
 const useDeleteTask = (taskId: string) => {
-    const [deleteTask, {error, loading, data}] =  useMutation(DELETE_TASK_QUERY,{
+    const [deleteTask, {error, loading, data}] =  useMutation<Boolean>(DELETE_TASK_QUERY,{
         variables: {
             id: taskId
         }

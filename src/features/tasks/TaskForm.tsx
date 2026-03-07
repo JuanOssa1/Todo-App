@@ -20,9 +20,9 @@ import {
 import { close } from "../ui/modalSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Task, TaskFormData } from "./types";
-import { TaskPriority } from "../../shared/constants";
+import { TaskPriority, TaskPriorityType, TaskStatusType } from "../../shared/constants";
 import { TaskState } from "../../shared/constants";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
@@ -33,12 +33,12 @@ import { useAppSelector } from "../../app/hooks";
 
 const validationSchema: yup.ObjectSchema<TaskFormData> = yup.object().shape({
   taskName: yup.string().required("Title is required"),
-  taskPriority: yup.mixed(),
-  taskState: yup.mixed(),
-  taskDescription: yup.string(),
-  taskAssignedTo: yup.string(),
-  taskCreationDate: yup.mixed(),
-  taskEndDate: yup.mixed()
+  taskPriority: yup.mixed<TaskPriorityType>().required("Priority is required"),
+  taskState: yup.mixed<TaskStatusType>().required("State is required"),
+  taskDescription: yup.string().required("Task description is required"),
+  taskAssignedTo: yup.string().required("Assigned To is required"),
+  taskCreationDate: yup.mixed<Dayjs>().optional(),
+  taskEndDate: yup.mixed<Dayjs>().optional()
 });
 const textFieldStyle = {
   marginBottom: "13px"

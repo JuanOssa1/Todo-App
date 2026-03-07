@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
+import { TaskResponse } from "../../features/tasks/types";
 
 const GET_TASK_QUERY = gql`
     query task($taskId: String!){
@@ -15,7 +16,7 @@ const GET_TASK_QUERY = gql`
     }
 `
 const useGetTask = (taskId: string) => {
-    const {error, loading, data, refetch} = useQuery(GET_TASK_QUERY, {
+    const {error, loading, data, refetch} = useQuery<TaskResponse>(GET_TASK_QUERY, {
         variables: {taskId},
         fetchPolicy: "cache-first"
     })

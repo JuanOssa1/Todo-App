@@ -28,7 +28,7 @@ export interface UpdateProjectResponse {
     updateProject: ProjectResponse; 
 }
 export interface GetProjectResponse {
-    projects: ProjectResponse; 
+    project: ProjectResponse; 
 }
 export interface GetProjectsResponse {
     projects: ProjectResponse[]; 
