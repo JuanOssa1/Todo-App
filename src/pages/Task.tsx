@@ -9,35 +9,41 @@ import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import { Backdrop, CircularProgress, IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { isEditing, selectIsLoadingTask } from "../features/tasks/taskSlice";
+import { isEditing } from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import TaskStatus from "../features/tasks/TaskStatus";
 import PageTitle from "../features/ui/PageTitle";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import {
-  getTask,
+  setTask,
   selectActiveTsk,
-  removeDbTask
 } from "../features/tasks/taskSlice";
 import { AppDispatch } from "../app/store";
 import { useAppSelector } from "../app/hooks";
 import { useNavigate } from "react-router-dom";
+import useDeleteTask from "../hooks/tasks/useDeleteTask";
+import useGetTask from "../hooks/tasks/useGetTask";
+import { mapTaskResponseToTask } from "../features/tasks/taskMappers";
 
 function Task() {
   const dispatch = useDispatch<AppDispatch>();
   const task = useAppSelector(selectActiveTsk);
-  const isLoadingTask = useAppSelector(selectIsLoadingTask);
   const navigate = useNavigate();
   const { taskId } = useParams();
+  const { deleteTask } = useDeleteTask(taskId!);
+  const {data, loading} =  useGetTask(taskId!);
+
   useEffect(() => {
-    dispatch(getTask(taskId!));
-  }, [dispatch, taskId]);
+    if(data){
+      const task = mapTaskResponseToTask(data.task);
+      dispatch(setTask(task));
+    }
+  }, [dispatch, taskId, data]);
 
   const goPreviousPage = () => {
     navigate(-1);
   };
-  console.log(task?.taskAssignedTo);
 
   return (
     <>
@@ -49,7 +55,7 @@ function Task() {
       )}
       <Backdrop
         sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-        open={isLoadingTask}
+        open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -123,7 +129,7 @@ function Task() {
               </IconButton>
               <IconButton
                 onClick={() => {
-                  dispatch(removeDbTask(taskId!));
+                  deleteTask();
                   goPreviousPage();
                 }}
               >

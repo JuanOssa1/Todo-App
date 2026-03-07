@@ -22,18 +22,20 @@ import TaskItemList from "../features/tasks/TaskItemList";
 import TaskFilter from "../features/tasks/TaskFilter";
 
 import Backdrop from "@mui/material/Backdrop";
-import { getDbTasks } from "../features/tasks/taskSlice";
 import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import { CircularProgress } from "@mui/material";
+import useGetProjectTasks from "../hooks/tasks/useGetProjectTasks";
+import { setTasks } from "../features/tasks/taskSlice";
+import { mapProjectTasksResponseToTasks } from "../features/tasks/taskMappers";
 
 function Project() {
   const { projectId } = useParams();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const { data, loading } = useGetProjectTasks(projectId!);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const isLoadingTask = useAppSelector(selectIsLoadingTask);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -45,10 +47,18 @@ function Project() {
   const goPreviousPage = () => {
     navigate(-1);
   };
+  
+  const getTasksHelper = () =>{
+    if(data){
+      const mappedData = mapProjectTasksResponseToTasks(data.tasksByProject);
+      dispatch(setTasks(mappedData));
+    }  
+  }
 
   useEffect(() => {
-    dispatch(getDbTasks(projectId!));
-  }, [dispatch, projectId]);
+    getTasksHelper();
+  }, [dispatch, projectId, data]);
+
 
   return (
     <>
@@ -61,7 +71,7 @@ function Project() {
 
       <Backdrop
         sx={theme => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-        open={isLoadingTask}
+        open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

@@ -38,7 +38,9 @@ const initialTaskState: TaskSliceState = {
   taskActive: {
     taskId: "",
     projectId: "",
-    taskName: ""
+    taskName: "",
+    taskPriority: "",
+    taskState: ""
   },
   taskBeingEdited: false,
   taskLoading: false

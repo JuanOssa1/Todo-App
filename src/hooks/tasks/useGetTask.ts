@@ -1,10 +1,11 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { TaskResponse } from "../../features/tasks/types";
+import { GetTaskResponse } from "../../features/tasks/types";
 
 const GET_TASK_QUERY = gql`
     query task($taskId: String!){
         task(id: $taskId) {
+            id
             name
             description
             assignedTo
@@ -16,7 +17,7 @@ const GET_TASK_QUERY = gql`
     }
 `
 const useGetTask = (taskId: string) => {
-    const {error, loading, data, refetch} = useQuery<TaskResponse>(GET_TASK_QUERY, {
+    const {error, loading, data, refetch} = useQuery<GetTaskResponse, {taskId: string}>(GET_TASK_QUERY, {
         variables: {taskId},
         fetchPolicy: "cache-first"
     })

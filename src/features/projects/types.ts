@@ -35,11 +35,7 @@ export interface GetProjectsResponse {
 }
 
 export interface CreateProjectVariables {
-    input: {
-        title: string;
-        description?: string;
-        imageUrl?: string;
-    }
+    input: ProjectInput;
 }
 
 export interface UpdateProjectVariables extends CreateProjectVariables {

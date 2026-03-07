@@ -74,7 +74,15 @@ export interface GetTaskResponse {
     task: TaskResponse; 
 }
 export interface GetProjectTasksResponse {
-    tasks: TaskResponse[]; 
+    tasksByProject: TaskResponse[]; 
+}
+
+export interface CreateTaskVariables {
+  input: CreateTaskInput;
+}
+export interface UpdateTaskVariables {
+  taskId: string;
+  input: UpdateTaskInput;
 }
 
 

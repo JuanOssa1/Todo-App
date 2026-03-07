@@ -13,6 +13,7 @@ const GET_PROJECT_TASKS_QUERY = gql`
             state
             creationDate
             endDate
+            projectId
         }
     }
 `

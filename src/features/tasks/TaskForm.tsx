@@ -11,7 +11,6 @@ import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
   addTask,
-  addDbTask,
   selectActiveTsk,
   selectTaskIsEditing,
   isEditing,
@@ -21,7 +20,7 @@ import { close } from "../ui/modalSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs, { Dayjs } from "dayjs";
-import { Task, TaskFormData } from "./types";
+import { CreateTaskInput, Task, TaskFormData, UpdateTaskInput } from "./types";
 import { TaskPriority, TaskPriorityType, TaskStatusType } from "../../shared/constants";
 import { TaskState } from "../../shared/constants";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -30,6 +29,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useParams } from "react-router-dom";
 import { AppDispatch } from "../../app/store";
 import { useAppSelector } from "../../app/hooks";
+import useUpdateTask from "../../hooks/tasks/useUpdateTask";
+import useCreateTask from "../../hooks/tasks/useCreateTask";
+import { mapTaskFormDataToCreateTaskInput, mapTaskFormDataToUpdateTaskInput, mapTaskResponseToTask } from "./taskMappers";
 
 const validationSchema: yup.ObjectSchema<TaskFormData> = yup.object().shape({
   taskName: yup.string().required("Title is required"),
@@ -48,6 +50,8 @@ export const TaskForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const currentTask = useAppSelector(selectActiveTsk);
   const isEditingTask = useAppSelector(selectTaskIsEditing);
+  const { updateTask } = useUpdateTask();
+  const { createTask } = useCreateTask();
   const { projectId } = useParams();
   const setDefaultValues = () => {
     let defaultValues = {};
@@ -82,33 +86,43 @@ export const TaskForm = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: setDefaultValues()
   });
+
   const onSubmit = (values: TaskFormData) => {
-    const taskId =
-      Date.now().toString(36) + Math.random().toString(36).slice(2);
-
-    const newTask: Task = {
-      taskName: values.taskName,
-      taskPriority: values.taskPriority,
-      taskState: values.taskState,
-      taskDescription: values.taskDescription,
-      taskAssignedTo: values.taskAssignedTo,
-      taskCreationDate: values.taskCreationDate?.toDate().toDateString(),
-      taskEndDate: values.taskEndDate?.toDate().toLocaleDateString(),
-      taskId,
-      projectId: projectId!
-    };
-
     if (isEditingTask && currentTask) {
-      const updatedTask = { ...newTask, taskId: currentTask?.taskId };
-      dispatch(addDbTask(updatedTask));
-      dispatch(setTask(updatedTask));
+      const taskToUpdate  = mapTaskFormDataToUpdateTaskInput(values);
+      updateTaskHelper(currentTask, taskToUpdate);
     } else {
-      dispatch(addDbTask(newTask));
-      dispatch(addTask(newTask));
+      const newTask = mapTaskFormDataToCreateTaskInput(values, projectId!);
+      createTaskHelper(newTask);
     }
     dispatch(close());
     dispatch(isEditing(false));
   };
+
+  const updateTaskHelper = async (currentTask: Task, taskInput: UpdateTaskInput) => {
+    const task = await updateTask({
+      variables: {
+        taskId: currentTask.taskId,
+        input: taskInput,
+      }
+    })
+    if (task.data) {
+      const updatedTask = mapTaskResponseToTask(task.data.updateTask);
+      dispatch(setTask(updatedTask));
+    }
+  }
+
+  const createTaskHelper = async (taskInput: CreateTaskInput) => {
+    const task = await createTask({
+      variables: {
+        input: taskInput,
+      }
+    })
+    if (task.data) {
+      const newTask = mapTaskResponseToTask(task.data.createTask);
+      dispatch(addTask(newTask));
+    }
+  }
 
   return (
     <>

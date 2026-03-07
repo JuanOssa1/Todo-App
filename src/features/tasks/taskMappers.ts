@@ -12,7 +12,7 @@ export const mapTaskResponseToTask = (response: TaskResponse): Task => ({
   projectId: response.projectId
 });
 
-export const mapProjectFormDataToCreateProjectInput = (formData: TaskFormData, projectId: string): CreateTaskInput => ({
+export const mapTaskFormDataToCreateTaskInput = (formData: TaskFormData, projectId: string): CreateTaskInput => ({
     name: formData.taskName,
     description: formData.taskDescription,
     assignedTo: formData.taskAssignedTo,
@@ -22,7 +22,7 @@ export const mapProjectFormDataToCreateProjectInput = (formData: TaskFormData, p
     projectId
 });
 
-export const mapProjectFormDataToUpdateProjectInput = (formData: TaskFormData, projectId: string): UpdateTaskInput => ({
+export const mapTaskFormDataToUpdateTaskInput = (formData: TaskFormData): UpdateTaskInput => ({
     name: formData.taskName,
     description: formData.taskDescription,
     assignedTo: formData.taskAssignedTo,
@@ -30,3 +30,6 @@ export const mapProjectFormDataToUpdateProjectInput = (formData: TaskFormData, p
     state: formData.taskState,
     endDate: formData.taskEndDate ? formData.taskEndDate.toISOString() : undefined,
 });
+
+export const mapProjectTasksResponseToTasks = (responses: TaskResponse[]): Task[] =>
+  responses.map(mapTaskResponseToTask);
