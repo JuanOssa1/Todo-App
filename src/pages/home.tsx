@@ -12,7 +12,6 @@ import { useEffect } from "react";
 import {setProjects } from "../features/projects/projectSlice";
 import { mapProjectsResponseToProjects } from "../features/projects/projectMappers";
 import useGetProjects from "../hooks/projects/useGetProjects";
-import { useAppSelector } from "../app/hooks";
 import { AppDispatch } from "../app/store";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
