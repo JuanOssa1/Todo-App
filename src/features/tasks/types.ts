@@ -1,6 +1,9 @@
 import { Dayjs } from "dayjs";
 import { TaskPriorityType, TaskStatusType } from "../../shared/constants";
 
+export interface StatusItemProps {
+  taskStatus?: TaskStatusType;
+}
 export interface TaskFormData {
   taskName: string;
   taskPriority: TaskPriorityType;
