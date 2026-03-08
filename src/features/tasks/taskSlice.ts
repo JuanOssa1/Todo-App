@@ -210,7 +210,12 @@ export const taskSlice = createAppSlice({
     selectTaskIsLoaded: task => task.tasksAreLoaded,
     selectActiveTsk: task => task.taskActive,
     selectTaskIsEditing: task => task.taskBeingEdited,
-    selectIsLoadingTask: task => task.taskLoading
+    selectIsLoadingTask: task => task.taskLoading,
+    selectFilters: task => ({
+      taskPriority: task.taskPriority,
+      taskState: task.taskState
+    }),
+    selectOrder: task => task.taskOrder
   }
 });
 
@@ -236,5 +241,7 @@ export const {
   selectTaskList,
   selectActiveTsk,
   selectTaskIsEditing,
-  selectIsLoadingTask
+  selectIsLoadingTask,
+  selectFilters,
+  selectOrder
 } = taskSlice.selectors;

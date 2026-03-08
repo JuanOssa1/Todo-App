@@ -11,8 +11,10 @@ import Button from "@mui/material/Button";
 import { MouseEventHandler } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { filterDbTask, setFilters } from "./taskSlice";
+import { setTasks, setFilters } from "./taskSlice";
 import { AppDispatch } from "../../app/store";
+import useGetProjectTasks from "../../hooks/tasks/useGetProjectTasks";
+import { mapProjectTasksResponseToTasks } from "./taskMappers";
 
 interface TaskFilterForm {
   taskPriority?: TaskPriorityType | "All";
@@ -23,6 +25,7 @@ interface TaskFilterProps {
 }
 function TaskFilter({ onClick }: TaskFilterProps) {
   const { projectId } = useParams();
+  const { data } = useGetProjectTasks(projectId!);
   const {
     handleSubmit,
     control,
@@ -36,9 +39,11 @@ function TaskFilter({ onClick }: TaskFilterProps) {
   const dispatch = useDispatch<AppDispatch>();
   const onSubmit = (values: TaskFilterForm) => {
     const { taskPriority, taskState } = values;
-    dispatch(filterDbTask({ taskPriority, taskState, projectId }));
     dispatch(setFilters({ taskPriority, taskState }));
-    console.log(values);
+    if(data){
+      const mappedData = mapProjectTasksResponseToTasks(data.tasksByProject);
+      dispatch(setTasks(mappedData));
+    }
   };
 
   const filterStyles = {

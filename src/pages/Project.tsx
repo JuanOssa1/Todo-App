@@ -2,11 +2,8 @@ import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../app/hooks";
 import {
-  selectIsLoadingTask,
   sortTasks,
-  sortDbTask
 } from "../features/tasks/taskSlice";
 import { open } from "../features/ui/modalSlice";
 import { AppDispatch } from "../app/store";
@@ -91,7 +88,7 @@ function Project() {
             <Sort
               onClick={() => {
                 dispatch(sortTasks());
-                dispatch(sortDbTask(projectId!));
+                getTasksHelper();
               }}
             />
           </Box>
